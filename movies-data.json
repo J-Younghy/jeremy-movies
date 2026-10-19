@@ -1,0 +1,222 @@
+[
+  {
+    "title": "2001太空漫游",
+    "originalTitle": "2001: A Space Odyssey",
+    "year": 1968,
+    "rating": 8.0,
+    "voteCount": 12795,
+    "genres": ["科幻", "悬疑", "冒险"],
+    "director": "斯坦利·库布里克",
+    "status": "TO WATCH",
+    "poster": "posters/62.jpg"
+  },
+  {
+    "title": "乱",
+    "originalTitle": "乱",
+    "year": 1985,
+    "rating": 8.0,
+    "voteCount": 1871,
+    "genres": ["动作", "剧情", "历史"],
+    "director": "黑泽明",
+    "status": "TO WATCH",
+    "poster": "posters/11645.jpg"
+  },
+  {
+    "title": "伊甸湖",
+    "originalTitle": "Eden Lake",
+    "year": 2008,
+    "rating": 6.8,
+    "voteCount": 2133,
+    "genres": ["恐怖", "惊悚"],
+    "director": "詹姆斯·沃特金斯",
+    "status": "TO WATCH",
+    "poster": "posters/13510.jpg"
+  },
+  {
+    "title": "复仇者联盟3：无限战争",
+    "originalTitle": "Avengers: Infinity War",
+    "year": 2018,
+    "rating": 8.2,
+    "voteCount": 32450,
+    "genres": ["冒险", "动作", "科幻"],
+    "director": "乔·罗素",
+    "status": "TO WATCH",
+    "poster": "posters/299536.jpg"
+  },
+  {
+    "title": "复仇者联盟4：终局之战",
+    "originalTitle": "Avengers: Endgame",
+    "year": 2019,
+    "rating": 8.2,
+    "voteCount": 28180,
+    "genres": ["冒险", "科幻", "动作"],
+    "director": "安东尼·罗素",
+    "status": "TO WATCH",
+    "poster": "posters/299534.jpg"
+  },
+  {
+    "title": "奥德赛",
+    "originalTitle": "The Odyssey",
+    "year": 2026,
+    "rating": 8.0,
+    "voteCount": 1721,
+    "genres": ["冒险", "动作", "奇幻"],
+    "director": "克里斯托弗·诺兰",
+    "status": "WATCHED",
+    "poster": "posters/1368337.jpg"
+  },
+  {
+    "title": "女魔头",
+    "originalTitle": "Monster",
+    "year": 2003,
+    "rating": 7.2,
+    "voteCount": 2607,
+    "genres": ["犯罪", "剧情"],
+    "director": "派蒂·杰金斯",
+    "status": "WATCHED",
+    "poster": "posters/504.jpg"
+  },
+  {
+    "title": "安德烈·卢布廖夫",
+    "originalTitle": "Андрей Рублёв",
+    "year": 1966,
+    "rating": 7.9,
+    "voteCount": 962,
+    "genres": ["剧情", "历史"],
+    "director": "安德烈·塔可夫斯基",
+    "status": "TO WATCH",
+    "poster": "posters/895.jpg"
+  },
+  {
+    "title": "巅峰猎杀",
+    "originalTitle": "Apex",
+    "year": 2026,
+    "rating": 6.9,
+    "voteCount": 1855,
+    "genres": ["动作", "惊悚"],
+    "director": "巴塔萨·科马库",
+    "status": "WATCHED",
+    "poster": "posters/1318447.jpg"
+  },
+  {
+    "title": "痴迷",
+    "originalTitle": "Obsession",
+    "year": 2026,
+    "rating": 8.2,
+    "voteCount": 3862,
+    "genres": ["恐怖", "惊悚"],
+    "director": "Curry Barker",
+    "status": "WATCHED",
+    "poster": "posters/1339713.jpg"
+  },
+  {
+    "title": "着魔",
+    "originalTitle": "Possession",
+    "year": 1981,
+    "rating": 7.3,
+    "voteCount": 1404,
+    "genres": ["恐怖"],
+    "director": "安德列·祖拉维斯基",
+    "status": "WATCHED",
+    "poster": "posters/21484.jpg"
+  },
+  {
+    "title": "糖精",
+    "originalTitle": "Saccharine",
+    "year": 2026,
+    "rating": 6.6,
+    "voteCount": 78,
+    "genres": ["恐怖"],
+    "director": "Natalie Erika James",
+    "status": "WATCHED",
+    "poster": "posters/1363387.jpg"
+  },
+  {
+    "title": "美国X档案",
+    "originalTitle": "American History X",
+    "year": 1998,
+    "rating": 8.3,
+    "voteCount": 12827,
+    "genres": ["剧情"],
+    "director": "托尼·凯耶",
+    "status": "WATCHED",
+    "poster": "posters/73.jpg"
+  },
+  {
+    "title": "致命拜访",
+    "originalTitle": "The Invasion",
+    "year": 2007,
+    "rating": 6.1,
+    "voteCount": 1793,
+    "genres": ["恐怖", "悬疑", "科幻", "惊悚"],
+    "director": "奥利弗·希施比格尔",
+    "status": "WATCHED",
+    "poster": "posters/4858.jpg"
+  },
+  {
+    "title": "菜单",
+    "originalTitle": "The Menu",
+    "year": 2022,
+    "rating": 7.2,
+    "voteCount": 6565,
+    "genres": ["喜剧", "恐怖"],
+    "director": "马克·迈洛德",
+    "status": "WATCHED",
+    "poster": "posters/593643.jpg"
+  },
+  {
+    "title": "蜘蛛侠：崭新之日",
+    "originalTitle": "Spider-Man: Brand New Day",
+    "year": 2026,
+    "rating": 7.6,
+    "voteCount": 40,
+    "genres": ["科幻", "动作", "冒险"],
+    "director": "德斯汀·丹尼尔·克雷顿",
+    "status": "WATCHED",
+    "poster": "posters/969681.jpg"
+  },
+  {
+    "title": "Spider-Man: No Way Home",
+    "originalTitle": "Spider-Man: No Way Home",
+    "year": 2021,
+    "rating": 7.9,
+    "voteCount": 22349,
+    "genres": ["Action", "Adventure", "Science Fiction"],
+    "director": "Jon Watts",
+    "status": "WATCHED",
+    "poster": "posters/634649.jpg"
+  },
+  {
+    "title": "超凡蜘蛛侠2",
+    "originalTitle": "The Amazing Spider-Man 2",
+    "year": 2014,
+    "rating": 6.5,
+    "voteCount": 14420,
+    "genres": ["动作", "冒险", "科幻"],
+    "director": "马克·韦伯",
+    "status": "WATCHED",
+    "poster": "posters/102382.jpg"
+  },
+  {
+    "title": "阿拉伯的劳伦斯",
+    "originalTitle": "Lawrence of Arabia",
+    "year": 1962,
+    "rating": 8.0,
+    "voteCount": 3511,
+    "genres": ["冒险", "历史", "战争"],
+    "director": "大卫·里恩",
+    "status": "TO WATCH",
+    "poster": "posters/947.jpg"
+  },
+  {
+    "title": "雷霆特攻队",
+    "originalTitle": "Thunderbolts*",
+    "year": 2025,
+    "rating": 7.3,
+    "voteCount": 3753,
+    "genres": ["动作", "科幻", "冒险"],
+    "director": "杰克·施莱尔",
+    "status": "TO WATCH",
+    "poster": "posters/986056.jpg"
+  }
+]

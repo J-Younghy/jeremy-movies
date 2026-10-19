@@ -1,0 +1,212 @@
+/* ==========================================================================
+   Jeremy's Movies — 海报墙样式
+   风格：Apple 极简 · 无交互（纯静态）· 浅色/深色双主题自动适配系统
+   实现：CSS 变量 + prefers-color-scheme 自动切换，零 JavaScript
+   ========================================================================== */
+
+/* ===== 主题变量 ===== */
+:root {
+  /* 浅色主题（默认） */
+  --bg:            #f5f5f7;
+  --card-bg:       #ffffff;
+  --text-primary:  #1d1d1f;
+  --text-secondary:#6e6e73;
+  --text-tertiary: #86868b;
+  --border:        #d2d2d7;
+  --accent:        #0071e3;
+  --accent-text:   #ffffff;
+
+  --shadow-card:   0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-hover:  0 2px 4px rgba(0, 0, 0, 0.06), 0 16px 40px rgba(0, 0, 0, 0.12);
+
+  --score-bg:      #0071e3;
+  --score-text:    #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* 深色主题（跟随系统自动切换） */
+    --bg:            #000000;
+    --card-bg:       #1d1d1f;
+    --text-primary:  #f5f5f7;
+    --text-secondary:#a1a1a6;
+    --text-tertiary: #86868b;
+    --border:        #424245;
+    --accent:        #2997ff;
+    --accent-text:   #ffffff;
+
+    --shadow-card:   0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-hover:  0 2px 4px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.6);
+
+    --score-bg:      #2997ff;
+    --score-text:    #ffffff;
+  }
+}
+
+/* ===== 全局基础 ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+               "Helvetica Neue", "PingFang SC", "Hiragino Sans GB",
+               "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ===== Header（标题区） ===== */
+.site-header {
+  text-align: center;
+  padding: 96px 24px 48px;
+}
+
+.site-header h1 {
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.site-header p {
+  font-size: 21px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-top: 12px;
+}
+
+.site-header .divider {
+  width: 40px;
+  height: 1px;
+  background: var(--border);
+  margin: 24px auto 0;
+}
+
+/* ===== 海报网格 ===== */
+.poster-grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(6, 1fr);
+  padding: 0 48px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ===== 海报卡片 ===== */
+.poster-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.poster-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.poster-card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+  background: var(--card-bg);
+}
+
+.poster-card .info {
+  padding: 14px 16px 16px;
+}
+
+.poster-card .title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poster-card .year {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.poster-card .meta {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ===== 评分徽章 ===== */
+.score-badge {
+  display: inline-block;
+  background: var(--score-bg);
+  color: var(--score-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  text-align: center;
+  padding: 64px 24px 80px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+/* ===== 响应式断点 ===== */
+@media (max-width: 1279px) {
+  .poster-grid { grid-template-columns: repeat(5, 1fr); gap: 28px; padding: 0 40px; }
+}
+
+@media (max-width: 1023px) {
+  .poster-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 0 32px; }
+}
+
+@media (max-width: 767px) {
+  .poster-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 24px; }
+}
+
+@media (max-width: 640px) {
+  .poster-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 16px; }
+  .site-header { padding: 64px 16px 32px; }
+  .site-header h1 { font-size: 40px; }
+  .site-header p { font-size: 17px; }
+  .poster-card .title { font-size: 15px; }
+  .poster-card .info { padding: 10px 12px 12px; }
+}
