@@ -77,7 +77,7 @@
 
   /* 悬停预览背景（浅色）：虚化剧照 + 压暗遮罩 */
   --preview-scrim: rgba(0, 0, 0, 0.42);
-  --preview-blur: 24px;
+  --preview-blur: 12px;
 
   --fs-hero:    40px;
   --fs-section: 22px;
