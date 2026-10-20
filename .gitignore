@@ -1,2 +1,7 @@
 数据核查报告.md
 DESIGN-SPEC.md
+__pycache__/
+*.pyc
+SYNC-PIPELINE-SPEC.md
+scripts/config.json
+scripts/writeback_data.json
