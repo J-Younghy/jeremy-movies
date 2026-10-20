@@ -126,15 +126,17 @@
     <p>© 2026 Jeremy · 海报与数据来自 TMDB</p>
   </footer>
 
-  <!-- ===== 悬停展开剧照预览（仅 pointer:fine 桌面端，JS 驱动） ===== -->
-  <div class="focus-veil" data-focus-veil aria-hidden="true"></div>
-  <div class="still-focus" data-still-focus aria-hidden="true">
-    <img class="still-focus__poster" alt="" />
-    <img class="still-focus__still" alt="" />
-    <div class="still-focus__caption">
-      <span class="still-focus__title"></span>
-      <span class="still-focus__year"></span>
-    </div>
+  <!-- ===== 悬停 / 点按预览：全屏虚化剧照背景 + 海报保持原样 + 空白区剧情梗概（JS 驱动） ===== -->
+  <div class="preview-bg" data-preview-bg aria-hidden="true">
+    <img class="preview-bg__img" alt="" />
+    <div class="preview-bg__scrim"></div>
+  </div>
+  <!-- 海报克隆：贴到原海报相同位置与尺寸，浮于虚化背景之上（视觉上"海报不变"） -->
+  <div class="poster-card preview-card" data-preview-card aria-hidden="true"></div>
+  <!-- 剧情梗概：自适应放在海报旁的空白一侧 -->
+  <div class="preview-overview" data-preview-overview aria-hidden="true">
+    <h3 class="preview-overview__title"></h3>
+    <p class="preview-overview__text"></p>
   </div>
 
   <!-- ===== IMDB 式详情页 overlay（全屏，无页面跳转） ===== -->

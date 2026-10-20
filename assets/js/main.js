@@ -26,7 +26,9 @@
   var pointerFine = window.matchMedia('(pointer: fine)').matches;
   var hoverable = window.matchMedia('(hover: hover)').matches;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var coarsePointer = window.matchMedia('(pointer: coarse)').matches;
   var hoverEnabled = pointerFine && hoverable && !reduceMotion;
+  var touchMode = coarsePointer && !hoverEnabled;  // 触屏两段式点按
 
   // 拟火 / 详情页时序（reduced-motion 退化为 200ms 淡入淡出）
   var OPEN_MS = reduceMotion ? 200 : 640;
@@ -42,6 +44,11 @@
   var closeTimer = null;
   var hoverIntent = null;
 
+  // 预览态状态（悬停 / 点按共用）
+  var previewActive = false;
+  var previewSourceCard = null;
+  var previewMovie = null;
+
   /* ======================================================================
      2. DOM 引用
      ====================================================================== */
@@ -56,13 +63,13 @@
   var burger = document.querySelector('[data-nav-burger]');
   var themeToggle = document.querySelector('[data-theme-toggle]');
 
-  // 悬停剧照预览（单例）
-  var focusVeil = document.querySelector('[data-focus-veil]');
-  var stillFocus = document.querySelector('[data-still-focus]');
-  var stillPoster = stillFocus ? stillFocus.querySelector('.still-focus__poster') : null;
-  var stillImg = stillFocus ? stillFocus.querySelector('.still-focus__still') : null;
-  var stillTitle = stillFocus ? stillFocus.querySelector('.still-focus__title') : null;
-  var stillYear = stillFocus ? stillFocus.querySelector('.still-focus__year') : null;
+  // 悬停 / 点按预览（单例）
+  var previewBg = document.querySelector('[data-preview-bg]');
+  var previewBgImg = previewBg ? previewBg.querySelector('.preview-bg__img') : null;
+  var previewCard = document.querySelector('[data-preview-card]');
+  var previewOverview = document.querySelector('[data-preview-overview]');
+  var previewTitle = previewOverview ? previewOverview.querySelector('.preview-overview__title') : null;
+  var previewText = previewOverview ? previewOverview.querySelector('.preview-overview__text') : null;
 
   // 详情页
   var detail = document.querySelector('[data-detail]');
@@ -256,7 +263,7 @@
   function render() {
     if (!grid) return;
 
-    hideStill();
+    hidePreview();
 
     // 统计
     var watched = 0, towatch = 0;
@@ -286,12 +293,19 @@
   }
 
   /* ======================================================================
-     7. 卡片交互：点击进详情 + 键盘触发 + 悬停剧照预览
+     7. 卡片交互：点击进详情 + 键盘触发 + 悬停预览 + 触屏两段式点按
      ====================================================================== */
   function onCardClick(e) {
     var card = e.currentTarget;
     var movie = findMovie(card.getAttribute('data-id'));
-    if (movie) openDetail(card, movie, {});
+    if (!movie) return;
+
+    // 触屏：第一次点按 → 进入预览态；第二次点按（由海报克隆承接）→ 详情
+    if (touchMode && !previewActive) {
+      showPreview(card, movie);
+      return;
+    }
+    openDetail(card, movie, {});
   }
 
   function onCardKeydown(e) {
@@ -309,12 +323,12 @@
     var movie = findMovie(card.getAttribute('data-id'));
     if (!movie) return;
     clearTimeout(hoverIntent);
-    hoverIntent = setTimeout(function () { showStill(card, movie); }, 120);
+    hoverIntent = setTimeout(function () { showPreview(card, movie); }, 120);
   }
 
   function onCardLeave() {
     clearTimeout(hoverIntent);
-    hideStill();
+    hidePreview();
   }
 
   function bindCards() {
@@ -329,54 +343,117 @@
   }
 
   /* ======================================================================
-     8. 悬停展开剧照预览（仅 pointer:fine + hover:hover，含 120ms 意图延迟）
+     8. 预览态：虚化剧照背景 + 海报不变 + 空白区剧情梗概
      ====================================================================== */
-  function setStillRect(x, y, w, h) {
-    if (!stillFocus) return;
-    stillFocus.style.left = x + 'px';
-    stillFocus.style.top = y + 'px';
-    stillFocus.style.width = w + 'px';
-    stillFocus.style.height = h + 'px';
+  function positionPreviewCard(card) {
+    if (!previewCard) return;
+    var r = card.getBoundingClientRect();
+    previewCard.style.left = r.left + 'px';
+    previewCard.style.top = r.top + 'px';
+    previewCard.style.width = r.width + 'px';
+    previewCard.style.height = r.height + 'px';
+    previewCard.style.right = 'auto';
+    previewCard.style.bottom = 'auto';
   }
 
-  function showStill(card, movie) {
-    if (!stillFocus) return;
-    var media = card.querySelector('.poster-card__media');
-    if (!media) return;
-
-    var r = media.getBoundingClientRect();
-    var sx = r.left, sy = r.top, sw = r.width, sh = r.height;
-
+  function positionPreviewOverview(card) {
+    if (!previewOverview) return;
+    var r = card.getBoundingClientRect();
     var vw = window.innerWidth, vh = window.innerHeight;
-    var tw = Math.min(Math.max(420, vw * 0.62), 920);
-    var th = tw * 9 / 16;
-    var cx = sx + sw / 2, cy = sy + sh / 2;
-    var tx = cx - tw / 2, ty = cy - th / 2;
-    tx = Math.min(Math.max(24, tx), vw - tw - 24);
-    ty = Math.min(Math.max(24, ty), vh - th - 24);
+    var PAD = 16, GAP = 24;
+    var MIN_W = 140;    // 侧边可用宽度低于此值则改为上下堆叠
+    var MAX_W = 460;    // 梗概面板最大宽度（保证可读）
 
-    if (stillPoster) stillPoster.src = movie.poster || '';
-    if (stillImg) stillImg.src = movie.backdrop || movie.poster || '';
-    if (stillTitle) stillTitle.textContent = movie.title || '';
-    if (stillYear) stillYear.textContent = movie.year != null ? String(movie.year) : '';
+    var leftSpace = r.left - PAD;
+    var rightSpace = vw - r.right - PAD;
+    var topSpace = r.top - PAD;
+    var bottomSpace = vh - r.bottom - PAD;
 
-    // 先无过渡地吸附到海报起点，再触发展开过渡
-    stillFocus.classList.remove('is-on');
-    if (focusVeil) focusVeil.classList.remove('is-on');
-    stillFocus.style.transition = 'none';
-    setStillRect(sx, sy, sw, sh);
-    void stillFocus.offsetWidth; // 强制 reflow，提交起点
-    stillFocus.style.transition = '';
+    previewOverview.style.left = 'auto';
+    previewOverview.style.right = 'auto';
+    previewOverview.style.top = 'auto';
+    previewOverview.style.bottom = 'auto';
+    previewOverview.style.maxWidth = 'none';
+    previewOverview.style.maxHeight = 'none';
+    previewOverview.style.textAlign = 'left';
 
-    if (focusVeil) focusVeil.classList.add('is-on');
-    stillFocus.classList.add('is-on');
-    setStillRect(tx, ty, tw, th);
+    var onRight = rightSpace >= leftSpace;  // 海报靠左 → 梗概放右侧（空白多的一侧）
+
+    if (Math.max(leftSpace, rightSpace) >= MIN_W) {
+      // —— 侧边放置：左右择空白多的一侧，上下择空隙多的一侧对齐 ——
+      if (onRight) {
+        previewOverview.style.left = (r.right + GAP) + 'px';
+        previewOverview.style.maxWidth = Math.min(MAX_W, Math.max(MIN_W, rightSpace - GAP)) + 'px';
+      } else {
+        previewOverview.style.right = (vw - r.left + GAP) + 'px';
+        previewOverview.style.maxWidth = Math.min(MAX_W, Math.max(MIN_W, leftSpace - GAP)) + 'px';
+      }
+      if (bottomSpace >= topSpace) {
+        // 下方空隙更多 → 贴顶向下铺展
+        previewOverview.style.top = r.top + 'px';
+        previewOverview.style.maxHeight = Math.max(120, vh - PAD - r.top) + 'px';
+      } else {
+        previewOverview.style.bottom = (vh - r.bottom) + 'px';
+        previewOverview.style.maxHeight = Math.max(120, r.bottom - PAD) + 'px';
+      }
+    } else {
+      // —— 上下堆叠：侧边太窄（窄屏）时，放在海报上/下方空白 ——
+      previewOverview.style.maxWidth = Math.min(MAX_W, Math.max(220, vw - PAD * 2)) + 'px';
+      if (topSpace >= bottomSpace) {
+        previewOverview.style.bottom = (vh - r.top + GAP) + 'px';
+        previewOverview.style.maxHeight = Math.max(120, r.top - GAP) + 'px';
+      } else {
+        previewOverview.style.top = (r.bottom + GAP) + 'px';
+        previewOverview.style.maxHeight = Math.max(120, vh - r.bottom - GAP) + 'px';
+      }
+      if (onRight) {
+        previewOverview.style.left = r.left + 'px';
+      } else {
+        previewOverview.style.right = (vw - r.right) + 'px';
+      }
+    }
   }
 
-  function hideStill() {
+  function showPreview(card, movie) {
+    previewActive = true;
+    previewSourceCard = card;
+    previewMovie = movie;
+    body.classList.add('is-preview');
+
+    // 触屏预览态锁滚动，避免海报与背景错位
+    if (touchMode) document.documentElement.style.overflow = 'hidden';
+
+    if (previewBgImg) previewBgImg.src = movie.backdrop || movie.poster || '';
+    if (previewBg) previewBg.classList.add('is-on');
+
+    if (previewCard) {
+      previewCard.innerHTML = card.innerHTML;   // 复制真实海报内容，保证视觉"不变"
+      positionPreviewCard(card);
+      previewCard.classList.add('is-on');
+    }
+
+    if (previewTitle) previewTitle.textContent = movie.title || '';
+    if (previewText) {
+      previewText.textContent = movie.overview || '';
+      previewText.style.display = movie.overview ? '' : 'none';
+    }
+    if (previewOverview) {
+      positionPreviewOverview(card);
+      previewOverview.classList.add('is-on');
+    }
+  }
+
+  function hidePreview() {
     clearTimeout(hoverIntent);
-    if (focusVeil) focusVeil.classList.remove('is-on');
-    if (stillFocus) stillFocus.classList.remove('is-on');
+    if (!previewActive) return;
+    previewActive = false;
+    previewSourceCard = null;
+    previewMovie = null;
+    body.classList.remove('is-preview');
+    if (touchMode) document.documentElement.style.overflow = '';
+    if (previewBg) previewBg.classList.remove('is-on');
+    if (previewCard) previewCard.classList.remove('is-on');
+    if (previewOverview) previewOverview.classList.remove('is-on');
   }
 
   /* ======================================================================
@@ -541,7 +618,7 @@
     detailOpen = true;
     currentMovieId = String(movie.id);
 
-    hideStill();
+    hidePreview();
 
     var m = (opts.fromCenter || !card) ? centerMetrics() : fireMetrics(card);
     setFireOrigin(m);
@@ -671,6 +748,35 @@
   }
 
   /* ======================================================================
+     11.5 预览态事件：触屏两段式点按 + 桌面滚动/缩放时收起
+     ====================================================================== */
+  function initPreview() {
+    // 触屏：预览态下点海报克隆 → 进详情；点背景空白 → 退回海报墙
+    if (previewCard) {
+      previewCard.addEventListener('click', function () {
+        if (!touchMode || !previewActive) return;
+        var card = previewSourceCard;
+        var movie = previewMovie;
+        if (card && movie) openDetail(card, movie, {});
+      });
+    }
+    if (previewBg) {
+      previewBg.addEventListener('click', function () {
+        if (!touchMode || !previewActive) return;
+        hidePreview();
+      });
+    }
+
+    // 桌面悬停是瞬态：滚动/缩放会使海报移位，直接收起预览
+    window.addEventListener('scroll', function () {
+      if (previewActive && !touchMode) hidePreview();
+    });
+    window.addEventListener('resize', function () {
+      hidePreview();
+    });
+  }
+
+  /* ======================================================================
      12. 工具栏事件
      ====================================================================== */
   function initToolbar() {
@@ -794,5 +900,6 @@
   initNav();
   initToolbar();
   initDetail();
+  initPreview();
   loadData();
 })();

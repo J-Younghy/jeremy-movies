@@ -75,9 +75,9 @@
   --fire-edge:   #e6320c;   /* 燃烧边缘·红 */
   --fire-glow:   rgba(255, 150, 30, 0.30);  /* 火后余温光晕 */
 
-  /* 悬停虚化遮罩（浅色） */
-  --focus-veil-bg: rgba(0, 0, 0, 0.30);
-  --focus-blur: 16px;
+  /* 悬停预览背景（浅色）：虚化剧照 + 压暗遮罩 */
+  --preview-scrim: rgba(0, 0, 0, 0.42);
+  --preview-blur: 24px;
 
   --fs-hero:    40px;
   --fs-section: 22px;
@@ -127,7 +127,7 @@
   --status-towatch:      #ff9f0a; --status-towatch-text: #1d1d1f;
 
   --scrim: rgba(0, 0, 0, 0.55);
-  --focus-veil-bg: rgba(0, 0, 0, 0.55);
+  --preview-scrim: rgba(0, 0, 0, 0.55);
 }
 
 /* 跟随系统（且用户未强制浅色时）——无 JS 时系统深色依然生效 */
@@ -168,7 +168,7 @@
     --status-towatch:      #ff9f0a; --status-towatch-text: #1d1d1f;
 
     --scrim: rgba(0, 0, 0, 0.55);
-  --focus-veil-bg: rgba(0, 0, 0, 0.55);
+    --preview-scrim: rgba(0, 0, 0, 0.55);
   }
 }
 
@@ -551,70 +551,99 @@ main,
 .stars--sm { font-size: 12px; }
 
 /* ==========================================================================
-   8.1 悬停展开剧照预览（focus-veil + still-focus）
+   8.1 悬停 / 点按预览：虚化剧照背景 + 海报不变 + 空白区剧情梗概
    ========================================================================== */
-/* 虚化 + 压暗遮罩：盖住除剧照面板外的所有区域（含导航） */
-.focus-veil {
+/* 全屏虚化剧照背景：盖住整页（含导航），作为预览态的背景层 */
+.preview-bg {
   position: fixed;
   inset: 0;
   z-index: 250;
-  pointer-events: none;
-  background: var(--focus-veil-bg);
-  backdrop-filter: blur(var(--focus-blur)) saturate(1.1);
-  -webkit-backdrop-filter: blur(var(--focus-blur)) saturate(1.1);
-  opacity: 0;
-  transition: opacity var(--dur-hover-veil) var(--ease-standard);
-}
-.focus-veil.is-on { opacity: 1; }
-
-/* 剧照面板：JS 控制 left/top/width/height（起点=海报矩形，终点=展开面板） */
-.still-focus {
-  position: fixed;
-  z-index: 260;
-  pointer-events: none;
   overflow: hidden;
-  border-radius: 16px;
-  background: var(--bg-elevated);
-  box-shadow: var(--shadow-pop);
+  background: var(--bg);           /* 剧照加载中的占位底色 */
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transition:
-    left var(--dur-hover-still) var(--ease-out),
-    top  var(--dur-hover-still) var(--ease-out),
-    width  var(--dur-hover-still) var(--ease-out),
-    height var(--dur-hover-still) var(--ease-out),
-    border-radius var(--dur-hover-still) var(--ease-out),
-    opacity var(--dur-hover-veil) var(--ease-standard);
+    opacity var(--dur-hover-veil) var(--ease-standard),
+    visibility 0s linear var(--dur-hover-veil);
 }
-.still-focus.is-on { opacity: 1; border-radius: 20px; }
+.preview-bg.is-on {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--dur-hover-veil) var(--ease-standard),
+    visibility 0s linear 0s;
+}
 
-.still-focus__poster,
-.still-focus__still {
+.preview-bg__img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: blur(var(--preview-blur)) saturate(1.05);
+  transform: scale(1.12);          /* 放大，避免模糊边缘透出底边 */
 }
-.still-focus__poster { opacity: 1; transition: opacity var(--dur-hover-still) var(--ease-standard); }
-.still-focus__still  { opacity: 0; transition: opacity var(--dur-hover-still) var(--ease-standard); }
-.still-focus.is-on .still-focus__poster { opacity: 0; }  /* 海报 → 剧照交叉淡化 */
-.still-focus.is-on .still-focus__still  { opacity: 1; }
 
-.still-focus__caption {
+.preview-bg__scrim {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 40px 18px 14px;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  color: #fff;
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.62));
-  opacity: 0;
-  transition: opacity var(--dur-hover-still) var(--ease-standard);
+  inset: 0;
+  background: var(--preview-scrim);
 }
-.still-focus.is-on .still-focus__caption { opacity: 1; }
-.still-focus__title { font-size: 15px; font-weight: 600; }
-.still-focus__year  { font-size: 13px; opacity: 0.8; font-variant-numeric: tabular-nums; }
+
+/* 海报克隆：与真实海报同位置、同尺寸、同内容，浮于背景之上（视觉上"海报不变"） */
+.poster-card.preview-card {
+  position: fixed;
+  z-index: 270;
+  pointer-events: none;
+  transform: none !important;   /* 克隆不做 hover 上浮，保持与原海报一致 */
+  opacity: 0;
+  transition: opacity var(--dur-hover-veil) var(--ease-standard);
+  box-shadow: var(--shadow-hover);
+}
+.poster-card.preview-card.is-on { opacity: 1; }
+
+/* 剧情梗概：放在海报旁空白较多的一侧 */
+.preview-overview {
+  position: fixed;
+  z-index: 270;
+  pointer-events: none;
+  width: auto;
+  max-width: 460px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity var(--dur-hover-veil) var(--ease-standard);
+}
+.preview-overview.is-on { opacity: 1; }
+
+.preview-overview__title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+.preview-overview__text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.94);
+  margin: 0;
+  /* 超长用省略号截断 */
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 触屏预览态：让背景与海报克隆可点按（点背景退回、点海报进详情） */
+@media (pointer: coarse) {
+  body.is-preview .preview-bg,
+  body.is-preview .preview-card {
+    pointer-events: auto;
+  }
+}
 
 /* ==========================================================================
    8.2 IMDB 式详情页 overlay
@@ -1053,8 +1082,8 @@ body.is-detail-open .detail__glow { opacity: 1; }
   }
   .detail__body { opacity: 1; transform: none; transition: none; }
 
-  /* 悬停剧照预览：直接关闭 */
-  .focus-veil, .still-focus { display: none; }
+  /* 悬停预览：桌面 hover 已在 JS 中禁用（hoverEnabled=false），
+     触屏两段式点按保留，仅淡入淡出退化为即时切换 */
 }
 
 /* ==========================================================================
