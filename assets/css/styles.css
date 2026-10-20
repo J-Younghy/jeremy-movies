@@ -479,6 +479,12 @@ main,
   outline-offset: 3px;
 }
 
+/* 预览激活时，高亮当前聚焦的真实卡片（消除"盲抓"不确定感） */
+.poster-card.is-hovering {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55),
+              var(--shadow-hover);
+}
+
 .poster-card__media {
   position: relative;
   background: var(--bg-sunken);
@@ -591,50 +597,138 @@ main,
   background: var(--preview-scrim);
 }
 
-/* 海报克隆：与真实海报同位置、同尺寸、同内容，浮于背景之上（视觉上"海报不变"） */
+/* 海报克隆：聚焦卡片 —— hover 时向空白多的一侧平移 + 放大，浮于虚化背景之上 */
 .poster-card.preview-card {
   position: fixed;
   z-index: 270;
   pointer-events: none;
-  transform: none !important;   /* 克隆不做 hover 上浮，保持与原海报一致 */
+  --focus-dx: 0px; --focus-dy: 0px; --focus-scale: 1;
+  transform: translate(var(--focus-dx), var(--focus-dy)) scale(var(--focus-scale));
+  transform-origin: top left;
   opacity: 0;
-  transition: opacity var(--dur-hover-veil) var(--ease-standard);
+  transition:
+    opacity var(--dur-hover-veil) var(--ease-standard),
+    transform var(--dur-hover-still) var(--ease-out);
   box-shadow: var(--shadow-hover);
+  will-change: transform;
 }
 .poster-card.preview-card.is-on { opacity: 1; }
+/* 聚焦态：变量已由 JS 更新为位移+放大目标值，transition 自动平滑过渡 */
 
-/* 剧情梗概：放在海报旁空白较多的一侧 */
+/* 剧情梗概：聚焦卡片旁的固定信息面板（字号阶梯放大，层级清晰） */
 .preview-overview {
   position: fixed;
   z-index: 270;
   pointer-events: none;
   width: auto;
-  max-width: 460px;
+  max-width: 440px;
   color: #fff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   opacity: 0;
   transition: opacity var(--dur-hover-veil) var(--ease-standard);
 }
 .preview-overview.is-on { opacity: 1; }
 
+.preview-overview__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
 .preview-overview__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.preview-overview__year {
   font-size: 20px;
-  font-weight: 600;
-  line-height: 1.25;
-  margin: 0 0 10px;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.62);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.preview-overview__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.preview-overview__meta li {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 999px;
+  padding: 5px 13px;
 }
 
 .preview-overview__text {
-  font-size: 15px;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.94);
-  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 20px;
   /* 超长用省略号截断 */
   display: -webkit-box;
-  -webkit-line-clamp: 7;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.preview-overview__ratings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.preview-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.preview-rating__label { font-weight: 500; opacity: 0.8; }
+
+.preview-rating__value { font-size: 17px; font-variant-numeric: tabular-nums; }
+
+.preview-rating--imdb   .preview-rating__value { color: #f5c518; }
+.preview-rating--douban .preview-rating__value { color: #35d052; }
+.preview-rating--tmdb   .preview-rating__value { color: #4dd5ff; }
+.preview-rating--star   { color: #ffb340; }
+
+.preview-rating__star { color: #ffb340; font-size: 16px; letter-spacing: 1px; }
+
+.preview-overview__cast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preview-cast {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.82);
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 5px 14px;
 }
 
 /* 触屏预览态：让背景与海报克隆可点按（点背景退回、点海报进详情） */
@@ -643,6 +737,41 @@ main,
   body.is-preview .preview-card {
     pointer-events: auto;
   }
+}
+
+/* 移动端聚焦预览：上下堆叠布局，面板字号整体降档（桌面档 32/18px 手机上过大） */
+@media (max-width: 760px) {
+  .preview-overview {
+    text-align: center;
+    padding: 0 4px;
+  }
+  .preview-overview__head {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .preview-overview__title { font-size: 22px; }
+  .preview-overview__year { font-size: 15px; }
+  .preview-overview__meta {
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .preview-overview__meta li { font-size: 12px; padding: 4px 10px; }
+  .preview-overview__text {
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-line-clamp: 5;
+    margin-bottom: 12px;
+  }
+  .preview-overview__ratings {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .preview-rating { font-size: 13px; padding: 4px 10px; }
+  .preview-rating__value { font-size: 15px; }
+  .preview-cast { font-size: 12px; padding: 4px 11px; }
 }
 
 /* ==========================================================================
@@ -712,6 +841,18 @@ body.is-detail-closing .detail {
 .detail__backdrop {
   width: 100%; height: 100%;
   object-fit: cover;
+  /* 共享元素飞入：从触发海报位置放大铺满 */
+  --fly-x: 50%; --fly-y: 50%; --fly-scale: 1;
+  transform-origin: var(--fly-x) var(--fly-y);
+  transform: scale(var(--fly-scale));
+  transition: transform var(--dur-fire-open) var(--ease-fire);
+}
+body.is-detail-open .detail__backdrop {
+  transform: scale(1);
+}
+body.is-detail-closing .detail__backdrop {
+  transition: transform var(--dur-fire-close) var(--ease-fire-back);
+  transform: scale(var(--fly-scale));
 }
 
 /* 内容容器 */
@@ -1081,6 +1222,7 @@ body.is-detail-open .detail__glow { opacity: 1; }
     transition: opacity 200ms ease, visibility 0s linear 200ms;
   }
   .detail__body { opacity: 1; transform: none; transition: none; }
+  .detail__backdrop { transform: none !important; transition: none; }
 
   /* 悬停预览：桌面 hover 已在 JS 中禁用（hoverEnabled=false），
      触屏两段式点按保留，仅淡入淡出退化为即时切换 */

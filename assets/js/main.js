@@ -49,6 +49,11 @@
   var previewSourceCard = null;
   var previewMovie = null;
 
+  // 悬停进出状态机：移开立即收起；落下是否延迟取决于"是否刚移开还停在海报区"
+  var lastFocusCard = null;     // 当前聚焦的真实卡片（用于高亮）
+  var cooldownActive = false;   // 冷却态：刚移开且鼠标仍停在海报区 → 新海报需停留确认
+  var ENTER_DELAY = 260;        // 冷却态下，落在新海报上需停留 260ms 才展开（过滤快速扫过）
+
   /* ======================================================================
      2. DOM 引用
      ====================================================================== */
@@ -69,7 +74,11 @@
   var previewCard = document.querySelector('[data-preview-card]');
   var previewOverview = document.querySelector('[data-preview-overview]');
   var previewTitle = previewOverview ? previewOverview.querySelector('.preview-overview__title') : null;
+  var previewYear = previewOverview ? previewOverview.querySelector('.preview-overview__year') : null;
+  var previewMeta = previewOverview ? previewOverview.querySelector('.preview-overview__meta') : null;
   var previewText = previewOverview ? previewOverview.querySelector('.preview-overview__text') : null;
+  var previewRatings = previewOverview ? previewOverview.querySelector('.preview-overview__ratings') : null;
+  var previewCast = previewOverview ? previewOverview.querySelector('.preview-overview__cast') : null;
 
   // 详情页
   var detail = document.querySelector('[data-detail]');
@@ -322,13 +331,35 @@
     var card = e.currentTarget;
     var movie = findMovie(card.getAttribute('data-id'));
     if (!movie) return;
+
+    // 预览已展开且停在同一张卡上：无需重复触发
+    if (previewActive && previewSourceCard === card) return;
+
     clearTimeout(hoverIntent);
-    hoverIntent = setTimeout(function () { showPreview(card, movie); }, 120);
+
+    if (cooldownActive) {
+      // 冷却态（刚移开、鼠标还停在海报区）：需停留 ENTER_DELAY 才展开，过滤快速扫过
+      hoverIntent = setTimeout(function () { showPreview(card, movie); }, ENTER_DELAY);
+    } else {
+      // 非冷却态（鼠标刚从空白处进入海报区）：立即显示
+      showPreview(card, movie);
+    }
   }
 
-  function onCardLeave() {
+  function onCardLeave(e) {
+    // 移开海报 → 立即收起预览，回到海报墙
     clearTimeout(hoverIntent);
     hidePreview();
+
+    // 判断鼠标落点，决定是否进入冷却态
+    var to = e.relatedTarget;
+    if (to && grid && grid.contains(to)) {
+      // 仍停在海报区（滑到相邻海报）：进入冷却态
+      cooldownActive = true;
+    } else {
+      // 移出海报区（落在空白/导航/页脚）：解除冷却，下次进入立即显示
+      cooldownActive = false;
+    }
   }
 
   function bindCards() {
@@ -343,8 +374,95 @@
   }
 
   /* ======================================================================
-     8. 预览态：虚化剧照背景 + 海报不变 + 空白区剧情梗概
+     8. 预览态：虚化剧照背景 + 聚焦卡片（海报平移放大）+ 固定信息面板
      ====================================================================== */
+  // 聚焦布局：海报向空白多的一侧平移+放大，信息面板固定在相反侧，垂直居中
+  function layoutFocus(card) {
+    var r = card.getBoundingClientRect();
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var PAD = 20;          // 视口安全边距
+    var GAP = 36;          // 海报与面板间距
+    var PANEL_W = 420;     // 信息面板固定宽度
+    var SCALE = 1.14;      // 聚焦放大倍数
+
+    var leftSpace = r.left;
+    var rightSpace = vw - r.right;
+    var placeRight = rightSpace >= leftSpace;  // 空白多的一侧放面板
+
+    // 窄屏退化为上下堆叠：视口太窄装不下「海报+面板」并排
+    var stacked = (vw < 760);   // 阈值：并排需海报宽+面板宽+间距
+    // 手机端海报小，放大更明显才有「聚焦」感；桌面维持 1.14
+    var scale = stacked ? 1.3 : SCALE;
+
+    var cardW = r.width, cardH = r.height;
+    var visualW = cardW * scale;
+    var visualH = cardH * scale;
+
+    // —— 海报克隆：始终以原海报左上角为锚点，用 translate 位移 + scale 放大 ——
+    var targetLeft, targetTop;   // 目标视觉左上角
+    if (stacked) {
+      targetLeft = Math.max(PAD, Math.min((vw - visualW) / 2, vw - PAD - visualW));
+      targetTop = PAD + 8;
+    } else if (placeRight) {
+      targetLeft = PAD;
+      var cy = r.top + cardH / 2;
+      targetTop = cy - visualH / 2;
+    } else {
+      targetLeft = vw - PAD - visualW;
+      cy = r.top + cardH / 2;
+      targetTop = cy - visualH / 2;
+    }
+    // 钳制垂直
+    if (targetTop < PAD) targetTop = PAD;
+    if (targetTop + visualH > vh - PAD) targetTop = vh - PAD - visualH;
+
+    // translate 位移量：从原海报左上角到目标视觉左上角的偏移
+    var dx = targetLeft - r.left;
+    var dy = targetTop - r.top;
+
+    if (previewCard) {
+      previewCard.style.setProperty('--focus-dx', dx + 'px');
+      previewCard.style.setProperty('--focus-dy', dy + 'px');
+      previewCard.style.setProperty('--focus-scale', scale);
+    }
+
+    // —— 信息面板：并排时固定在面板侧，堆叠时放海报下方 ——
+    if (previewOverview) {
+      ['left', 'right', 'top', 'bottom', 'maxWidth', 'maxHeight'].forEach(function (p) {
+        previewOverview.style[p] = '';
+      });
+      previewOverview.style.maxWidth = PANEL_W + 'px';
+
+      if (stacked) {
+        // 手机端：面板宽度钳制在视口内（375px 手机上 420px 会溢出）
+        previewOverview.style.maxWidth = Math.min(PANEL_W, vw - PAD * 2) + 'px';
+        previewOverview.style.left = '50%';
+        previewOverview.style.transform = 'translateX(-50%)';
+        previewOverview.style.top = (targetTop + visualH + GAP) + 'px';
+        // maxHeight 兜底：剩余空间过小（横屏/超矮视口）至少给 72px
+        var mh = vh - targetTop - visualH - GAP - PAD;
+        previewOverview.style.maxHeight = Math.max(72, mh) + 'px';
+      } else {
+        previewOverview.style.transform = '';
+        if (placeRight) {
+          previewOverview.style.left = (targetLeft + visualW + GAP) + 'px';
+        } else {
+          previewOverview.style.right = (vw - targetLeft + GAP) + 'px';
+        }
+        // 垂直居中于海报中心
+        var panelTop = targetTop + visualH / 2 - previewOverview.offsetHeight / 2;
+        if (panelTop < PAD) panelTop = PAD;
+        if (panelTop + previewOverview.offsetHeight > vh - PAD) {
+          panelTop = Math.max(PAD, vh - PAD - previewOverview.offsetHeight);
+        }
+        previewOverview.style.top = panelTop + 'px';
+      }
+    }
+
+    // 记录布局方向，供面板过渡用
+    if (previewCard) previewCard.setAttribute('data-side', placeRight ? 'right' : 'left');
+  }
+
   function positionPreviewCard(card) {
     if (!previewCard) return;
     var r = card.getBoundingClientRect();
@@ -354,62 +472,108 @@
     previewCard.style.height = r.height + 'px';
     previewCard.style.right = 'auto';
     previewCard.style.bottom = 'auto';
+    // 复位聚焦位移/缩放（过渡起点 = 原海报位置）
+    previewCard.style.setProperty('--focus-dx', '0px');
+    previewCard.style.setProperty('--focus-dy', '0px');
+    previewCard.style.setProperty('--focus-scale', '1');
   }
 
   function positionPreviewOverview(card) {
-    if (!previewOverview) return;
-    var r = card.getBoundingClientRect();
-    var vw = window.innerWidth, vh = window.innerHeight;
-    var PAD = 16, GAP = 24;
-    var MIN_W = 140;    // 侧边可用宽度低于此值则改为上下堆叠
-    var MAX_W = 460;    // 梗概面板最大宽度（保证可读）
+    // 聚焦卡片方案下，面板位置由 layoutFocus 统一计算
+    layoutFocus(card);
+  }
 
-    var leftSpace = r.left - PAD;
-    var rightSpace = vw - r.right - PAD;
-    var topSpace = r.top - PAD;
-    var bottomSpace = vh - r.bottom - PAD;
+  // 剧照预加载：避免切换影片时旧图消失→新图才渲染的错位闪烁
+  var backdropCache = {};
+  function loadBackdrop(src, done) {
+    if (!src) { done(false); return; }
+    if (backdropCache[src]) { done(true); return; }
+    var img = new Image();
+    img.onload = function () { backdropCache[src] = true; done(true); };
+    img.onerror = function () { done(false); };
+    img.src = src;
+  }
 
-    previewOverview.style.left = 'auto';
-    previewOverview.style.right = 'auto';
-    previewOverview.style.top = 'auto';
-    previewOverview.style.bottom = 'auto';
-    previewOverview.style.maxWidth = 'none';
-    previewOverview.style.maxHeight = 'none';
-    previewOverview.style.textAlign = 'left';
+  function populatePreview(movie) {
+    var r = movie.ratings || {};
+    var personal = movie.personal || {};
 
-    var onRight = rightSpace >= leftSpace;  // 海报靠左 → 梗概放右侧（空白多的一侧）
+    // 标题 + 年份
+    if (previewTitle) previewTitle.textContent = movie.title || '';
+    if (previewYear) {
+      previewYear.textContent = movie.year != null ? String(movie.year) : '';
+      previewYear.style.display = movie.year != null ? '' : 'none';
+    }
 
-    if (Math.max(leftSpace, rightSpace) >= MIN_W) {
-      // —— 侧边放置：左右择空白多的一侧，上下择空隙多的一侧对齐 ——
-      if (onRight) {
-        previewOverview.style.left = (r.right + GAP) + 'px';
-        previewOverview.style.maxWidth = Math.min(MAX_W, Math.max(MIN_W, rightSpace - GAP)) + 'px';
+    // meta chips：类型 / 时长 / 状态
+    if (previewMeta) {
+      previewMeta.innerHTML = '';
+      var chips = [];
+      (movie.genres || []).forEach(function (g) { chips.push(esc(g)); });
+      var rt = formatRuntime(movie.runtime);
+      if (rt) chips.push(esc(rt));
+      if (movie.status === 'watched') chips.push('\u5df2\u770b');
+      else if (movie.status === 'towatch') chips.push('\u5f85\u770b');
+      if (chips.length) {
+        chips.forEach(function (c) {
+          var li = document.createElement('li');
+          li.textContent = c;
+          previewMeta.appendChild(li);
+        });
+        previewMeta.style.display = '';
       } else {
-        previewOverview.style.right = (vw - r.left + GAP) + 'px';
-        previewOverview.style.maxWidth = Math.min(MAX_W, Math.max(MIN_W, leftSpace - GAP)) + 'px';
+        previewMeta.style.display = 'none';
       }
-      if (bottomSpace >= topSpace) {
-        // 下方空隙更多 → 贴顶向下铺展
-        previewOverview.style.top = r.top + 'px';
-        previewOverview.style.maxHeight = Math.max(120, vh - PAD - r.top) + 'px';
-      } else {
-        previewOverview.style.bottom = (vh - r.bottom) + 'px';
-        previewOverview.style.maxHeight = Math.max(120, r.bottom - PAD) + 'px';
+    }
+
+    // 剧情梗概
+    if (previewText) {
+      previewText.textContent = movie.overview || '';
+      previewText.style.display = movie.overview ? '' : 'none';
+    }
+
+    // 评分行：IMDB / 豆瓣 / TMDB（有则显示）+ 个人星级
+    if (previewRatings) {
+      previewRatings.innerHTML = '';
+      var items = [];
+      if (r.imdb && r.imdb.score != null) items.push(['imdb', 'IMDb', num(r.imdb.score)]);
+      if (r.douban && r.douban.score != null) items.push(['douban', '\u8c46\u74e3', num(r.douban.score)]);
+      if (r.tmdb && r.tmdb.score != null) items.push(['tmdb', 'TMDB', num(r.tmdb.score)]);
+      if (personal.rating != null) {
+        items.push(['star', '\u2605 ' + personal.rating, null]);
       }
-    } else {
-      // —— 上下堆叠：侧边太窄（窄屏）时，放在海报上/下方空白 ——
-      previewOverview.style.maxWidth = Math.min(MAX_W, Math.max(220, vw - PAD * 2)) + 'px';
-      if (topSpace >= bottomSpace) {
-        previewOverview.style.bottom = (vh - r.top + GAP) + 'px';
-        previewOverview.style.maxHeight = Math.max(120, r.top - GAP) + 'px';
+      if (items.length) {
+        items.forEach(function (it) {
+          var s = document.createElement('span');
+          s.className = 'preview-rating preview-rating--' + it[0];
+          if (it[2] != null) {
+            s.innerHTML = '<span class="preview-rating__label">' + esc(it[1]) + '</span>' +
+                          '<span class="preview-rating__value">' + esc(it[2]) + '</span>';
+          } else {
+            s.innerHTML = '<span class="preview-rating__star">' + it[1] + '</span>';
+          }
+          previewRatings.appendChild(s);
+        });
+        previewRatings.style.display = '';
       } else {
-        previewOverview.style.top = (r.bottom + GAP) + 'px';
-        previewOverview.style.maxHeight = Math.max(120, vh - r.bottom - GAP) + 'px';
+        previewRatings.style.display = 'none';
       }
-      if (onRight) {
-        previewOverview.style.left = r.left + 'px';
+    }
+
+    // 卡司（最多 4 人，避免画幅过满）
+    if (previewCast) {
+      previewCast.innerHTML = '';
+      var cast = movie.cast || [];
+      if (cast.length) {
+        cast.slice(0, 4).forEach(function (name) {
+          var c = document.createElement('span');
+          c.className = 'preview-cast';
+          c.textContent = name;
+          previewCast.appendChild(c);
+        });
+        previewCast.style.display = '';
       } else {
-        previewOverview.style.right = (vw - r.right) + 'px';
+        previewCast.style.display = 'none';
       }
     }
   }
@@ -420,27 +584,46 @@
     previewMovie = movie;
     body.classList.add('is-preview');
 
+    // 高亮当前聚焦的真实卡片（让用户清楚"聚焦的是哪张"）
+    if (lastFocusCard && lastFocusCard !== card) lastFocusCard.classList.remove('is-hovering');
+    card.classList.add('is-hovering');
+    lastFocusCard = card;
+
     // 触屏预览态锁滚动，避免海报与背景错位
     if (touchMode) document.documentElement.style.overflow = 'hidden';
 
-    if (previewBgImg) previewBgImg.src = movie.backdrop || movie.poster || '';
-    if (previewBg) previewBg.classList.add('is-on');
+    var bgSrc = movie.backdrop || movie.poster || '';
 
     if (previewCard) {
-      previewCard.innerHTML = card.innerHTML;   // 复制真实海报内容，保证视觉"不变"
-      positionPreviewCard(card);
+      previewCard.innerHTML = card.innerHTML;   // 复制真实海报内容
+      positionPreviewCard(card);                // 先落位到原海报位置（过渡起点）
       previewCard.classList.add('is-on');
+      void previewCard.offsetWidth;             // 强制 reflow，提交过渡起点
     }
 
-    if (previewTitle) previewTitle.textContent = movie.title || '';
-    if (previewText) {
-      previewText.textContent = movie.overview || '';
-      previewText.style.display = movie.overview ? '' : 'none';
-    }
-    if (previewOverview) {
-      positionPreviewOverview(card);
-      previewOverview.classList.add('is-on');
-    }
+    populatePreview(movie);
+    if (previewOverview) previewOverview.classList.add('is-on');
+
+    // 双 rAF：第一帧让浏览器提交过渡起点（样式计算），第二帧改终点才会产生 transition
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!previewActive || previewSourceCard !== card) return;
+        layoutFocus(card);
+      });
+    });
+
+    // 剧照背景：先预加载，就绪后再挂载，杜绝错位闪烁
+    loadBackdrop(bgSrc, function (ok) {
+      // 若用户已移开（预览已关闭）或已切到另一部，放弃本次挂载
+      if (!previewActive || previewMovie !== movie) return;
+      if (previewBgImg && ok) {
+        previewBgImg.src = bgSrc;
+        if (previewBg) previewBg.classList.add('is-on');
+      } else if (previewBg) {
+        // 剧照加载失败：仍开启背景层（显示占位底色），避免梗概无背景
+        previewBg.classList.add('is-on');
+      }
+    });
   }
 
   function hidePreview() {
@@ -450,9 +633,15 @@
     previewSourceCard = null;
     previewMovie = null;
     body.classList.remove('is-preview');
+    if (lastFocusCard) {
+      lastFocusCard.classList.remove('is-hovering');
+      lastFocusCard = null;
+    }
     if (touchMode) document.documentElement.style.overflow = '';
     if (previewBg) previewBg.classList.remove('is-on');
-    if (previewCard) previewCard.classList.remove('is-on');
+    if (previewCard) {
+      previewCard.classList.remove('is-on');
+    }
     if (previewOverview) previewOverview.classList.remove('is-on');
   }
 
@@ -600,6 +789,36 @@
     return { fx: fx, fy: fy, cover: coverFrom(fx, fy) };
   }
 
+  // 共享元素飞入：计算触发海报中心相对详情页 hero 的 transform-origin 与初始 scale
+  function setFlyMetrics(card) {
+    var hero = detail ? detail.querySelector('.detail__hero') : null;
+    if (!hero || !detailBackdrop) return;
+    var media = card ? card.querySelector('.poster-card__media') : null;
+    var srcRect = media ? media.getBoundingClientRect() : null;
+    var heroRect = hero.getBoundingClientRect();
+
+    if (!srcRect || srcRect.width === 0 || heroRect.width === 0) {
+      // 无海报源（如直达加载）：禁用飞入，回退默认
+      detailBackdrop.style.setProperty('--fly-x', '50%');
+      detailBackdrop.style.setProperty('--fly-y', '50%');
+      detailBackdrop.style.setProperty('--fly-scale', '1');
+      return;
+    }
+
+    // 海报中心 → 相对 hero 左上角的坐标（百分比）
+    var sx = (srcRect.left + srcRect.width / 2) - heroRect.left;
+    var sy = (srcRect.top + srcRect.height / 2) - heroRect.top;
+    var ox = (sx / heroRect.width) * 100;
+    var oy = (sy / heroRect.height) * 100;
+
+    // 初始 scale = 海报宽度 / hero 宽度（让剧照从海报尺寸放大铺满）
+    var scale = srcRect.width / heroRect.width;
+
+    detailBackdrop.style.setProperty('--fly-x', ox + '%');
+    detailBackdrop.style.setProperty('--fly-y', oy + '%');
+    detailBackdrop.style.setProperty('--fly-scale', scale);
+  }
+
   function setFireOrigin(m) {
     [fireEl, detail, glow].forEach(function (el) {
       if (!el) return;
@@ -625,6 +844,9 @@
 
     populateDetail(movie);
     if (detail) detail.scrollTop = 0;
+
+    // 共享元素飞入：从触发海报位置放大铺满
+    setFlyMetrics(opts.fromCenter ? null : card);
 
     body.classList.remove('is-detail-closing');
     if (detail) detail.hidden = false;
@@ -665,6 +887,9 @@
     didPush = false;
 
     clearTimeout(openTimer);
+
+    // 关闭时重新计算飞入终点（海报当前位置），让剧照缩回海报
+    if (lastTriggerCard) setFlyMetrics(lastTriggerCard);
 
     if (fireEl) fireEl.style.display = '';
     void (fireEl ? fireEl.offsetWidth : 0); // 提交火收缩起点（当前展开态）
