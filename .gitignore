@@ -5,3 +5,8 @@ __pycache__/
 SYNC-PIPELINE-SPEC.md
 scripts/config.json
 scripts/writeback_data.json
+# TMDB 人物数据拉取工具（临时开发脚本 + 中间产物，不提交）
+scripts/fetch_tmdb_people.js
+scripts/merge_people.js
+scripts/split_people.js
+cast_photos.json

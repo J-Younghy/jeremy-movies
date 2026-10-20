@@ -172,13 +172,25 @@
 
       <div class="detail__grid">
         <div class="detail__main">
+          <section class="detail__block detail__block--trailer" data-detail-trailer hidden>
+            <h3 class="detail__h">预告片</h3>
+            <div class="detail__trailer-box">
+              <div class="detail__trailer-placeholder" data-trailer-placeholder>
+                <button class="detail__trailer-btn" data-trailer-btn type="button" aria-label="播放预告片">
+                  <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none"></polygon></svg>
+                  <span>播放预告片</span>
+                </button>
+              </div>
+              <div class="detail__trailer-player" data-trailer-player hidden></div>
+            </div>
+          </section>
           <section class="detail__block detail__block--overview">
             <h3 class="detail__h">剧情简介</h3>
             <p class="detail__overview"></p>
           </section>
           <section class="detail__block detail__block--directors">
             <h3 class="detail__h">导演</h3>
-            <p class="detail__directors"></p>
+            <div class="detail__directors"></div>
           </section>
           <section class="detail__block detail__block--cast">
             <h3 class="detail__h">主演</h3>

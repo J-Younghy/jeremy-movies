@@ -99,6 +99,12 @@
   var personalBlock = detail ? detail.querySelector('.detail__personal') : null;
   var detailStars = detail ? detail.querySelector('.detail__stars') : null;
   var detailComment = detail ? detail.querySelector('.detail__comment') : null;
+  // 预告片
+  var trailerBlock = detail ? detail.querySelector('.detail__block--trailer') : null;
+  var trailerBtn = detail ? detail.querySelector('[data-trailer-btn]') : null;
+  var trailerPlaceholder = detail ? detail.querySelector('[data-trailer-placeholder]') : null;
+  var trailerPlayer = detail ? detail.querySelector('[data-trailer-player]') : null;
+  var currentTrailerId = null;
 
   var fireEl = document.querySelector('[data-fire]');
   var glow = document.querySelector('[data-detail-glow]');
@@ -115,6 +121,69 @@
   function num(v) {
     var n = Number(v);
     return isFinite(n) ? n.toFixed(1) : String(v);
+  }
+
+  // 取人物名：兼容「纯字符串」与「对象（含 name/photo/personId）」两种结构
+  function nameOf(p) {
+    if (p == null) return '';
+    return (typeof p === 'string') ? p : (p.name || '');
+  }
+  function photoOf(p) {
+    if (p == null || typeof p === 'string') return null;
+    return p.photo || null;
+  }
+
+  // 取 rich 导演（对象数组，含头像）；无 rich 则把字符串数组转成 {name} 兜底
+  function richDirectors(m) {
+    if (m._richDirectors && m._richDirectors.length) return m._richDirectors;
+    return (m.directors || []).map(function (d) {
+      return (typeof d === 'string') ? { name: d, personId: null, photo: null } : d;
+    });
+  }
+  function richCast(m) {
+    if (m._richCast && m._richCast.length) return m._richCast;
+    return (m.cast || []).map(function (c) {
+      return (typeof c === 'string') ? { name: c, character: null, personId: null, photo: null } : c;
+    });
+  }
+
+  // 生成人物 chip：带头像（有照片）或首字占位（无照片），返回 DOM 元素
+  function personChip(p, role) {
+    var wrap = document.createElement('span');
+    wrap.className = 'person-chip';
+    var name = nameOf(p);
+    var photo = photoOf(p);
+
+    if (photo) {
+      var img = document.createElement('img');
+      img.className = 'person-chip__avatar';
+      img.src = photo;
+      img.alt = name;
+      img.loading = 'lazy';
+      img.referrerPolicy = 'no-referrer';
+      img.onerror = function () { img.style.display = 'none'; };
+      wrap.appendChild(img);
+    } else {
+      var fallback = document.createElement('span');
+      fallback.className = 'person-chip__avatar person-chip__avatar--fallback';
+      fallback.setAttribute('aria-hidden', 'true');
+      fallback.textContent = name ? name.charAt(0) : '?';
+      wrap.appendChild(fallback);
+    }
+
+    var nm = document.createElement('span');
+    nm.className = 'person-chip__name';
+    nm.textContent = name;
+    wrap.appendChild(nm);
+
+    // 若为演员且带角色名，附角色
+    if (role === 'actor' && p && typeof p === 'object' && p.character) {
+      var ch = document.createElement('span');
+      ch.className = 'person-chip__character';
+      ch.textContent = p.character;
+      wrap.appendChild(ch);
+    }
+    return wrap;
   }
 
   function findMovie(id) {
@@ -505,10 +574,15 @@
       previewYear.style.display = movie.year != null ? '' : 'none';
     }
 
-    // meta chips：类型 / 时长 / 状态
+    // meta chips：导演 / 类型 / 时长 / 状态
     if (previewMeta) {
       previewMeta.innerHTML = '';
       var chips = [];
+      // 导演（可能有多个，取前 2 个，避免过长）
+      (movie.directors || []).slice(0, 2).forEach(function (d) {
+        var dn = nameOf(d);
+        if (dn) chips.push('\u5bfc ' + dn);
+      });
       (movie.genres || []).forEach(function (g) { chips.push(esc(g)); });
       var rt = formatRuntime(movie.runtime);
       if (rt) chips.push(esc(rt));
@@ -565,10 +639,10 @@
       previewCast.innerHTML = '';
       var cast = movie.cast || [];
       if (cast.length) {
-        cast.slice(0, 4).forEach(function (name) {
+        cast.slice(0, 4).forEach(function (p) {
           var c = document.createElement('span');
           c.className = 'preview-cast';
-          c.textContent = name;
+          c.textContent = nameOf(p);
           previewCast.appendChild(c);
         });
         previewCast.style.display = '';
@@ -699,26 +773,47 @@
       if (movie.overview && detailOverview) detailOverview.textContent = movie.overview;
     }
 
-    // 导演
-    if (directorsBlock) {
-      directorsBlock.hidden = !(movie.directors && movie.directors.length);
-      if (movie.directors && movie.directors.length && detailDirectors) {
-        detailDirectors.textContent = movie.directors.join('\u3001');
+    // 预告片（懒加载：先显示占位按钮，点击才挂载 iframe）
+    if (trailerBlock) {
+      var hasTrailer = !!(movie.trailer && movie.trailer.youtubeId);
+      trailerBlock.hidden = !hasTrailer;
+      if (hasTrailer) {
+        currentTrailerId = movie.trailer.youtubeId;
+        // 复位占位/播放器状态
+        if (trailerPlaceholder) trailerPlaceholder.hidden = false;
+        if (trailerPlayer) {
+          trailerPlayer.hidden = true;
+          trailerPlayer.innerHTML = '';
+        }
+      } else {
+        currentTrailerId = null;
       }
     }
 
-    // 卡司 chips
+    // 导演（带头像）
+    var dirs = richDirectors(movie);
+    if (directorsBlock) {
+      directorsBlock.hidden = !dirs.length;
+      if (detailDirectors) {
+        detailDirectors.innerHTML = '';
+        dirs.forEach(function (d) {
+          detailDirectors.appendChild(personChip(d, 'director'));
+        });
+      }
+    }
+
+    // 卡司 chips（带头像）
+    var castList = richCast(movie);
     if (castBlock) {
-      castBlock.hidden = !(movie.cast && movie.cast.length);
+      castBlock.hidden = !castList.length;
       if (detailCast) {
         detailCast.innerHTML = '';
-        if (movie.cast && movie.cast.length) {
-          movie.cast.forEach(function (c) {
-            var li = document.createElement('li');
-            li.textContent = c;
-            detailCast.appendChild(li);
-          });
-        }
+        castList.forEach(function (c) {
+          var li = document.createElement('li');
+          li.className = 'detail__cast-item';
+          li.appendChild(personChip(c, 'actor'));
+          detailCast.appendChild(li);
+        });
       }
     }
 
@@ -951,6 +1046,26 @@
   function initDetail() {
     if (backButton) backButton.addEventListener('click', requestClose);
 
+    // 预告片：点击占位按钮 → 懒加载 YouTube iframe（隐私/性能友好）
+    if (trailerBtn) {
+      trailerBtn.addEventListener('click', function () {
+        if (!currentTrailerId) return;
+        if (trailerPlaceholder) trailerPlaceholder.hidden = true;
+        if (trailerPlayer) {
+          trailerPlayer.hidden = false;
+          var iframe = document.createElement('iframe');
+          iframe.className = 'detail__trailer-iframe';
+          iframe.src = 'https://www.youtube-nocookie.com/embed/' + currentTrailerId + '?rel=0&modestbranding=1';
+          iframe.title = '预告片';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          iframe.allowFullscreen = true;
+          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+          iframe.loading = 'lazy';
+          trailerPlayer.appendChild(iframe);
+        }
+      });
+    }
+
     document.addEventListener('keydown', function (e) {
       if (!detailOpen) return;
       if (e.key === 'Escape') {
@@ -1065,7 +1180,7 @@
         item.alternateName = m.originalTitle;
       }
       if (m.directors && m.directors.length) {
-        item.director = { '@type': 'Person', name: m.directors[0] };
+        item.director = { '@type': 'Person', name: nameOf(m.directors[0]) };
       }
       if (m.genres && m.genres.length) {
         item.genre = m.genres;
@@ -1104,13 +1219,40 @@
      15. 数据加载与启动
      ====================================================================== */
   function loadData() {
-    fetch('movies.json', { cache: 'no-cache' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then(function (data) {
+    // 并行加载：movies.json（基础） + people.json（头像/预告片增强层，可选）
+    var p1 = fetch('movies.json', { cache: 'no-cache' }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+    var p2 = fetch('people.json', { cache: 'no-cache' }).then(function (res) {
+      if (!res.ok) return null;   // people.json 缺失不阻塞（优雅降级）
+      return res.json();
+    }).catch(function () { return null; });
+
+    Promise.all([p1, p2])
+      .then(function (results) {
+        var data = results[0];
+        var people = results[1] || {};
         movies = Array.isArray(data) ? data : (data && data.movies) || [];
+
+        // 合并增强层：按 movie.id 挂载 directors(对象数组)/cast(对象数组)/trailer
+        if (people) {
+          movies.forEach(function (m) {
+            var rich = people[String(m.id)];
+            if (!rich) return;
+            // 头像数据：people 里 directors/cast 是对象数组，含 name/photo/personId/character
+            if (Array.isArray(rich.directors) && rich.directors.length) {
+              m._richDirectors = rich.directors;
+            }
+            if (Array.isArray(rich.cast) && rich.cast.length) {
+              m._richCast = rich.cast;
+            }
+            if (rich.trailer && rich.trailer.youtubeId) {
+              m.trailer = rich.trailer;
+            }
+          });
+        }
+
         render();
         buildJsonLd();
         maybeOpenFromHash();
