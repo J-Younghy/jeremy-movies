@@ -42,13 +42,6 @@
 </head>
 <body>
 
-  <!-- 全屏背景层（悬停换背景，Netflix 效果） -->
-  <div class="bg-layer" aria-hidden="true">
-    <div class="bg-image bg-image--a"></div>
-    <div class="bg-image bg-image--b"></div>
-    <div class="bg-scrim"></div>
-  </div>
-
   <!-- 吸顶导航 -->
   <header class="nav" data-nav>
     <a class="nav-logo" href="/">Jeremy's</a>
@@ -132,6 +125,88 @@
   <footer class="site-footer">
     <p>© 2026 Jeremy · 海报与数据来自 TMDB</p>
   </footer>
+
+  <!-- ===== 悬停展开剧照预览（仅 pointer:fine 桌面端，JS 驱动） ===== -->
+  <div class="focus-veil" data-focus-veil aria-hidden="true"></div>
+  <div class="still-focus" data-still-focus aria-hidden="true">
+    <img class="still-focus__poster" alt="" />
+    <img class="still-focus__still" alt="" />
+    <div class="still-focus__caption">
+      <span class="still-focus__title"></span>
+      <span class="still-focus__year"></span>
+    </div>
+  </div>
+
+  <!-- ===== IMDB 式详情页 overlay（全屏，无页面跳转） ===== -->
+  <div class="detail" data-detail role="dialog" aria-modal="true" aria-labelledby="detail-title" hidden>
+    <button class="detail__back" data-detail-back aria-label="返回电影墙">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="detail__hero">
+      <img class="detail__backdrop" alt="" />
+    </div>
+
+    <div class="detail__body container">
+      <header class="detail__head">
+        <div class="detail__titles">
+          <h2 class="detail__title" id="detail-title">片名</h2>
+          <p class="detail__orig">原名 · 年份</p>
+        </div>
+        <div class="detail__head-side">
+          <span class="detail__status"></span>
+        </div>
+        <ul class="detail__meta"></ul>
+      </header>
+
+      <div class="detail__grid">
+        <div class="detail__main">
+          <section class="detail__block detail__block--overview">
+            <h3 class="detail__h">剧情简介</h3>
+            <p class="detail__overview"></p>
+          </section>
+          <section class="detail__block detail__block--directors">
+            <h3 class="detail__h">导演</h3>
+            <p class="detail__directors"></p>
+          </section>
+          <section class="detail__block detail__block--cast">
+            <h3 class="detail__h">主演</h3>
+            <ul class="detail__cast"></ul>
+          </section>
+        </div>
+
+        <aside class="detail__side">
+          <section class="detail__block detail__block--ratings">
+            <h3 class="detail__h">评分</h3>
+            <ul class="rating-list"></ul>
+          </section>
+          <section class="detail__block detail__personal">
+            <h3 class="detail__h">Jeremy 说</h3>
+            <div class="detail__stars"></div>
+            <p class="detail__comment"></p>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- 火后余温光晕 + 拟火元素 -->
+  <div class="detail__glow" data-detail-glow aria-hidden="true"></div>
+  <div class="fire" data-fire aria-hidden="true"></div>
+
+  <!-- SVG 滤镜定义：拟火不规则锯齿边缘 -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="fire-edge" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.018 0.024" numOctaves="4" seed="7" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="36" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+        <feGaussianBlur in="displaced" stdDeviation="1.6"/>
+      </filter>
+    </defs>
+  </svg>
 
   <script src="assets/js/main.js"></script>
 </body>

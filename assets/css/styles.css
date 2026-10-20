@@ -1,6 +1,6 @@
 /* ==========================================================================
    Jeremy's Movies — 主样式
-   风格：Apple 极简 · 数据驱动 · 三态主题 · 可交互翻转卡
+   风格：Apple 极简 · 数据驱动 · 三态主题 · 悬停剧照预览 + IMDB 式详情页 + 拟火展开动画
    技术：CSS 变量 + data-theme 三态 + prefers-color-scheme 回退，零框架零构建
    ========================================================================== */
 
@@ -16,6 +16,20 @@
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
   --ease-flip:     cubic-bezier(0.4, 0.2, 0.2, 1);
+
+  /* —— 悬停展开剧照 —— */
+  --dur-hover-still: 400ms;   /* 剧照面板展开/回溯 */
+  --dur-hover-veil:  340ms;   /* 虚化遮罩淡入淡出 */
+  --dur-hover-intent: 120ms;  /* 悬停意图延迟（JS 用） */
+
+  /* —— 拟火展开 —— */
+  --dur-fire-open:  640ms;    /* 火烧展开（正向） */
+  --dur-fire-close: 460ms;    /* 火收缩回溯（反向） */
+  --dur-detail-rise: 460ms;   /* 详情内容上浮落定 */
+
+  /* 缓动 */
+  --ease-fire:       cubic-bezier(0.55, 0, 0.12, 1); /* 火烧展开专属：快速起燃 → 长尾落定 */
+  --ease-fire-back:  cubic-bezier(0.5, 0, 0.8, 0.3); /* 火收缩回溯：快速吸回中心 */
 
   color-scheme: light dark;
 
@@ -44,6 +58,7 @@
   --imdb:      #f5c518; --imdb-text:      #000000;
   --douban:    #00b51d; --douban-text:    #ffffff;
   --boxoffice: #6e6e73; --boxoffice-text: #ffffff;
+  --tmdb:      #01b4e4; --tmdb-text:      #000000;
 
   --star:       #ff9f0a;
   --star-empty: #d2d2d7;
@@ -52,6 +67,17 @@
   --status-towatch:      #ff9500; --status-towatch-text: #ffffff;
 
   --scrim: rgba(0, 0, 0, 0.50);
+
+  /* 火焰（浅/深主题共用，火是暖色不受主题影响） */
+  --fire-core:   #ffd54f;   /* 内焰·亮黄 */
+  --fire-mid:    #ff9d00;   /* 中焰·橙 */
+  --fire-outer:  #ff5f00;   /* 外焰·橙红 */
+  --fire-edge:   #e6320c;   /* 燃烧边缘·红 */
+  --fire-glow:   rgba(255, 150, 30, 0.30);  /* 火后余温光晕 */
+
+  /* 悬停虚化遮罩（浅色） */
+  --focus-veil-bg: rgba(0, 0, 0, 0.30);
+  --focus-blur: 16px;
 
   --fs-hero:    40px;
   --fs-section: 22px;
@@ -92,6 +118,7 @@
   --imdb:      #f5c518; --imdb-text:      #000000;
   --douban:    #2fb344; --douban-text:    #ffffff;
   --boxoffice: #a1a1a6; --boxoffice-text: #000000;
+  --tmdb:      #3ac4f0; --tmdb-text:      #000000;
 
   --star:       #ffb340;
   --star-empty: #48484a;
@@ -100,6 +127,7 @@
   --status-towatch:      #ff9f0a; --status-towatch-text: #1d1d1f;
 
   --scrim: rgba(0, 0, 0, 0.55);
+  --focus-veil-bg: rgba(0, 0, 0, 0.55);
 }
 
 /* 跟随系统（且用户未强制浅色时）——无 JS 时系统深色依然生效 */
@@ -131,6 +159,7 @@
     --imdb:      #f5c518; --imdb-text:      #000000;
     --douban:    #2fb344; --douban-text:    #ffffff;
     --boxoffice: #a1a1a6; --boxoffice-text: #000000;
+  --tmdb:      #3ac4f0; --tmdb-text:      #000000;
 
     --star:       #ffb340;
     --star-empty: #48484a;
@@ -139,6 +168,7 @@
     --status-towatch:      #ff9f0a; --status-towatch-text: #1d1d1f;
 
     --scrim: rgba(0, 0, 0, 0.55);
+  --focus-veil-bg: rgba(0, 0, 0, 0.55);
   }
 }
 
@@ -199,50 +229,8 @@ button {
 }
 
 /* ==========================================================================
-   3. 背景层（Netflix 悬停换背景）
+   3. 内容层级
    ========================================================================== */
-.bg-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background: var(--bg);
-}
-
-.bg-image {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity var(--dur-bg) ease;
-  background-color: var(--bg); /* 加载前主色兜底（JS 会覆盖为电影主色） */
-}
-
-.bg-image.is-active {
-  opacity: 1;
-}
-
-.bg-scrim {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity var(--dur-bg) ease;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.38) 40%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
-}
-
-.bg-layer.is-showing .bg-scrim {
-  opacity: 1;
-}
-
-/* 内容层级：压在背景层之上 */
 .nav,
 main,
 .site-footer {
@@ -467,33 +455,12 @@ main,
 }
 
 /* ==========================================================================
-   8. 翻转卡片
+   8. 海报卡片（纯正面 + 悬停上浮 + 点击进详情）
    ========================================================================== */
 .poster-card {
-  perspective: 1200px;
+  position: relative;
   cursor: pointer;
   outline: none;
-}
-
-.poster-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 16px;
-}
-
-.card-inner {
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform var(--dur-flip) var(--ease-flip);
-}
-
-.card-face {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.card-front {
-  position: relative;
   background: var(--bg-elevated);
   border-radius: 16px;
   overflow: hidden;
@@ -502,13 +469,22 @@ main,
               box-shadow var(--dur-base) var(--ease-standard);
 }
 
-/* 悬停只上浮 + 换背景，不翻转 */
-.poster-card:hover .card-front {
+.poster-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-hover);
 }
 
-.card-front img {
+.poster-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.poster-card__media {
+  position: relative;
+  background: var(--bg-sunken);
+}
+
+.poster-card__media img {
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: cover;
@@ -516,11 +492,11 @@ main,
   background: var(--bg-sunken); /* 加载中占位底色 */
 }
 
-.card-front .info {
+.poster-card__info {
   padding: 12px 14px 14px;
 }
 
-.card-front .title {
+.poster-card__title {
   font-size: var(--fs-name);
   font-weight: 600;
   color: var(--text-primary);
@@ -530,18 +506,18 @@ main,
   text-overflow: ellipsis;
 }
 
-.card-front .info-row {
+.poster-card__meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 4px;
 }
 
-.card-front .year {
+.poster-card__year {
   font-size: var(--fs-meta);
   color: var(--text-secondary);
-  margin-left: auto;
   font-variant-numeric: tabular-nums;
+  margin-left: auto;
 }
 
 /* 状态角标（覆盖在海报左上角） */
@@ -574,112 +550,339 @@ main,
 
 .stars--sm { font-size: 12px; }
 
-/* ===== 卡片背面 ===== */
-.card-back {
+/* ==========================================================================
+   8.1 悬停展开剧照预览（focus-veil + still-focus）
+   ========================================================================== */
+/* 虚化 + 压暗遮罩：盖住除剧照面板外的所有区域（含导航） */
+.focus-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  pointer-events: none;
+  background: var(--focus-veil-bg);
+  backdrop-filter: blur(var(--focus-blur)) saturate(1.1);
+  -webkit-backdrop-filter: blur(var(--focus-blur)) saturate(1.1);
+  opacity: 0;
+  transition: opacity var(--dur-hover-veil) var(--ease-standard);
+}
+.focus-veil.is-on { opacity: 1; }
+
+/* 剧照面板：JS 控制 left/top/width/height（起点=海报矩形，终点=展开面板） */
+.still-focus {
+  position: fixed;
+  z-index: 260;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-pop);
+  opacity: 0;
+  transition:
+    left var(--dur-hover-still) var(--ease-out),
+    top  var(--dur-hover-still) var(--ease-out),
+    width  var(--dur-hover-still) var(--ease-out),
+    height var(--dur-hover-still) var(--ease-out),
+    border-radius var(--dur-hover-still) var(--ease-out),
+    opacity var(--dur-hover-veil) var(--ease-standard);
+}
+.still-focus.is-on { opacity: 1; border-radius: 20px; }
+
+.still-focus__poster,
+.still-focus__still {
   position: absolute;
   inset: 0;
-  transform: rotateY(180deg);
-  background: var(--bg-elevated);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  padding: 16px 16px 18px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.still-focus__poster { opacity: 1; transition: opacity var(--dur-hover-still) var(--ease-standard); }
+.still-focus__still  { opacity: 0; transition: opacity var(--dur-hover-still) var(--ease-standard); }
+.still-focus.is-on .still-focus__poster { opacity: 0; }  /* 海报 → 剧照交叉淡化 */
+.still-focus.is-on .still-focus__still  { opacity: 1; }
+
+.still-focus__caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 40px 18px 14px;
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  gap: 10px;
+  color: #fff;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.62));
+  opacity: 0;
+  transition: opacity var(--dur-hover-still) var(--ease-standard);
+}
+.still-focus.is-on .still-focus__caption { opacity: 1; }
+.still-focus__title { font-size: 15px; font-weight: 600; }
+.still-focus__year  { font-size: 13px; opacity: 0.8; font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   8.2 IMDB 式详情页 overlay
+   ========================================================================== */
+.detail {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  visibility: hidden;
+  clip-path: circle(0px at var(--fx, 50vw) var(--fy, 50vh));
+  transition:
+    clip-path var(--dur-fire-open) var(--ease-fire),
+    visibility 0s linear var(--dur-fire-open);
+}
+body.is-detail-open .detail {
+  visibility: visible;
+  clip-path: circle(var(--cover, 150vmax) at var(--fx, 50vw) var(--fy, 50vh));
+  transition:
+    clip-path var(--dur-fire-open) var(--ease-fire),
+    visibility 0s linear 0s;
+}
+body.is-detail-closing .detail {
+  transition:
+    clip-path var(--dur-fire-close) var(--ease-fire-back),
+    visibility 0s linear var(--dur-fire-close);
 }
 
-.card-back .back-title {
+/* 返回键：固定左上，毛玻璃圆钮 */
+.detail__back {
+  position: fixed;
+  top: 20px; left: 20px;
+  z-index: 320;
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  color: var(--text-primary);
+  background: var(--nav-bg);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur-fast) var(--ease-standard), background-color var(--dur-fast) ease;
+}
+.detail__back:hover { transform: scale(1.06); background: var(--bg-elevated); }
+.detail__back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* 剧照大图区 */
+.detail__hero {
+  position: relative;
+  width: 100%;
+  height: clamp(300px, 46vh, 560px);
+  overflow: hidden;
+  background: var(--bg-sunken);
+}
+.detail__hero::after {   /* 底部渐隐，融入内容区背景 */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.05) 0%,
+    transparent 38%,
+    var(--bg) 100%);
+}
+.detail__backdrop {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* 内容容器 */
+.detail__body { padding: 28px 48px 96px; }
+
+/* 标题块 */
+.detail__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  row-gap: 16px;
+  column-gap: 20px;
+}
+.detail__titles { min-width: 0; }
+.detail__head-side { margin-left: auto; }
+.detail__title {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+.detail__orig {
+  margin-top: 6px;
+  font-size: 17px;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+.detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 0;
+  list-style: none;
+}
+.detail__meta li {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-sunken);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+/* 双栏布局 */
+.detail__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 48px;
+  margin-top: 36px;
+  align-items: start;
+}
+.detail__block { margin-bottom: 32px; }
+.detail__h {
   font-size: 15px;
   font-weight: 600;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.card-back .data-zone {
-  padding: 14px 0 12px;
-}
-
-.card-back .stats {
-  display: flex;
-  gap: 8px;
-}
-
-.card-back .stat {
-  flex: 1;
-  min-width: 0;
-}
-
-.card-back .stat-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--text-tertiary);
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-transform: uppercase;
+  margin-bottom: 12px;
 }
-
-.card-back .stat-value {
-  font-size: var(--fs-stat);
-  font-weight: 600;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.stat--imdb .stat-value     { color: var(--imdb); }
-.stat--douban .stat-value   { color: var(--douban); }
-.stat--boxoffice .stat-value { color: var(--boxoffice); font-size: 18px; }
-
-.card-back .meta-line {
-  margin-top: 10px;
-  font-size: var(--fs-meta);
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card-back .review-zone {
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.card-back .review-label {
-  font-size: var(--fs-caption);
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
-
-.card-back .stars {
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-.card-back .comment {
-  font-size: var(--fs-body);
-  line-height: 1.55;
+.detail__overview {
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--text-primary);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  max-width: 68ch;
+}
+.detail__directors {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
 }
 
-/* 翻转态 */
-.poster-card.is-flipped .card-inner {
-  transform: rotateY(180deg);
+/* 卡司 chips */
+.detail__cast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+.detail__cast li {
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 7px 14px;
+}
+
+/* 评分列表（侧栏卡片） */
+.rating-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rating-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+}
+.rating-item__label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.rating-item__value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rating-item--imdb   .rating-item__value { color: var(--imdb); }
+.rating-item--douban .rating-item__value { color: var(--douban); }
+.rating-item--tmdb   .rating-item__value { color: var(--tmdb); }
+
+/* Jeremy 个人评价 */
+.detail__stars { font-size: 22px; color: var(--star); letter-spacing: 2px; }
+.detail__stars .star-empty { color: var(--star-empty); }
+.detail__comment {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+.detail__personal:empty,
+.detail__block:empty { display: none; }
+
+/* 状态徽章（详情页标题旁） */
+.detail__status {
+  font-size: 12px; font-weight: 600; line-height: 1;
+  padding: 6px 12px; border-radius: 999px;
+  display: inline-block;
+}
+
+/* 内容落定（火展开后内容轻微上浮） */
+.detail__body {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur-detail-rise) var(--ease-standard),
+              transform var(--dur-detail-rise) var(--ease-out);
+}
+body.is-detail-open .detail__body {
+  opacity: 1;
+  transform: none;
+  transition-delay: 140ms;   /* 等火掠过主体后再上浮 */
+}
+body.is-detail-closing .detail__body { opacity: 0; transform: translateY(10px); transition-delay: 0ms; }
+
+/* ==========================================================================
+   8.3 拟火展开动画 + 余温光晕
+   ========================================================================== */
+.fire {
+  position: fixed;
+  inset: 0;
+  z-index: 310;
+  pointer-events: none;
+  /* JS 内联覆盖：--fx/--fy=海报中心，--cover=1.35 * 海报中心到最远视口角距离 */
+  --fx: 50vw; --fy: 50vh; --cover: 150vmax;
+  background: radial-gradient(
+    circle var(--cover) at var(--fx) var(--fy),
+    transparent 0%,
+    transparent 82%,
+    rgba(255, 213, 79, 0.45) 86%,  /* 火前方光晕 */
+    var(--fire-core)  91%,
+    var(--fire-mid)   96%,
+    var(--fire-outer) 99%,
+    var(--fire-edge)  100%
+  );
+  clip-path: circle(0px at var(--fx) var(--fy));
+  filter: url(#fire-edge);
+  transition: clip-path var(--dur-fire-open) var(--ease-fire);
+  will-change: clip-path, filter;
+}
+body.is-detail-open .fire {
+  clip-path: circle(var(--cover) at var(--fx) var(--fy));
+}
+body.is-detail-closing .fire {
+  transition: clip-path var(--dur-fire-close) var(--ease-fire-back);
+}
+
+/* 火后余温：暖色径向光晕，展开时淡入 */
+.detail__glow {
+  position: fixed;
+  inset: 0;
+  z-index: 305;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--fx, 50vw) var(--fy, 50vh),
+      var(--fire-glow) 0%,
+      rgba(255, 90, 10, 0.08) 34%,
+      transparent 60%);
+  opacity: 0;
+  transition: opacity var(--dur-detail-rise) var(--ease-standard);
+}
+body.is-detail-open .detail__glow { opacity: 1; }
+
+/* SVG 滤镜定义：隐藏于布局之外 */
+.svg-defs {
+  position: absolute;
+  width: 0; height: 0;
+  overflow: hidden;
 }
 
 /* ==========================================================================
@@ -730,6 +933,11 @@ main,
 @media (max-width: 1023px) {
   .container { padding-left: 32px; padding-right: 32px; }
   .poster-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+  .detail__body { padding: 24px 32px 88px; }
+  .detail__grid { grid-template-columns: 1fr; gap: 8px; }
+  .detail__title { font-size: 32px; }
+  .detail__hero { height: clamp(240px, 38vh, 420px); }
 }
 
 @media (max-width: 767px) {
@@ -749,13 +957,17 @@ main,
   .segmented { overflow-x: auto; }
   .segmented button { white-space: nowrap; padding: 6px 12px; }
 
-  .card-front .info { padding: 10px 12px 12px; }
-  .card-front .title { font-size: 15px; }
-  .card-back { padding: 12px 12px 14px; }
-  .card-back .stat-value { font-size: 18px; }
-  .card-back .stat--boxoffice .stat-value { font-size: 16px; }
-  .card-back .stars { font-size: 16px; }
-  .card-back .back-title { font-size: 14px; }
+  .poster-card__info { padding: 10px 12px 12px; }
+  .poster-card__title { font-size: 15px; }
+
+  /* 详情页移动端 */
+  .detail__back { top: 12px; left: 12px; width: 40px; height: 40px; }
+  .detail__body { padding: 20px 16px 72px; }
+  .detail__title { font-size: 26px; }
+  .detail__orig { font-size: 15px; }
+  .detail__overview { font-size: 15px; }
+  .detail__hero { height: 34vh; }
+  .rating-item__value { font-size: 18px; }
 
   /* ===== 移动端汉堡菜单 ===== */
   .nav { height: 48px; padding: 0 16px; gap: 12px; }
@@ -823,8 +1035,26 @@ main,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .card-inner { transition: none; }
-  .bg-image { transition: none; }
+
+  /* 拟火关闭：详情页退化为简单淡入淡出 */
+  .fire, .detail__glow { display: none; }
+  .detail {
+    clip-path: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 200ms ease, visibility 0s linear 200ms;
+  }
+  body.is-detail-open .detail {
+    visibility: visible; opacity: 1;
+    transition: opacity 200ms ease, visibility 0s linear 0s;
+  }
+  body.is-detail-closing .detail {
+    transition: opacity 200ms ease, visibility 0s linear 200ms;
+  }
+  .detail__body { opacity: 1; transform: none; transition: none; }
+
+  /* 悬停剧照预览：直接关闭 */
+  .focus-veil, .still-focus { display: none; }
 }
 
 /* ==========================================================================

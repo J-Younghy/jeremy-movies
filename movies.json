@@ -5,17 +5,44 @@
     "title": "2001太空漫游",
     "originalTitle": "2001: A Space Odyssey",
     "year": 1968,
-    "genres": ["科幻", "悬疑", "冒险"],
-    "directors": ["斯坦利·库布里克"],
+    "genres": [
+      "科幻",
+      "悬疑",
+      "冒险"
+    ],
+    "directors": [
+      "斯坦利·库布里克"
+    ],
+    "overview": "一块神秘黑色石碑的出现，促成了远古猿人向人类的进化跃迁。数百万年后，人类在月球上发现了另一块石碑，为解开其秘密，宇宙飞船“发现一号”载着宇航员与超级计算机 HAL 9000 前往木星，展开一场充满未知与哲思的太空之旅。",
+    "cast": [
+      "凯尔·杜拉",
+      "加里·洛克伍德",
+      "威廉姆·西尔维斯特",
+      "道格拉斯·雷恩"
+    ],
+    "runtime": 149,
+    "releaseDate": "1968-04-02",
     "status": "towatch",
     "poster": "posters/62.jpg",
     "backdrop": "stills/62.webp",
     "ratings": {
-      "tmdb": { "score": 8.0, "votes": 12795 },
-      "imdb": { "score": 8.3, "votes": null },
-      "douban": { "score": 8.9, "votes": null }
+      "tmdb": {
+        "score": 8.0,
+        "votes": 12795
+      },
+      "imdb": {
+        "score": 8.3,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.9,
+        "votes": null
+      }
     },
-    "personal": { "rating": null, "comment": null },
+    "personal": {
+      "rating": null,
+      "comment": null
+    },
     "order": 1,
     "updatedAt": "2026-10-20"
   },
@@ -25,17 +52,44 @@
     "title": "乱",
     "originalTitle": "乱",
     "year": 1985,
-    "genres": ["动作", "剧情", "历史"],
-    "directors": ["黑泽明"],
+    "genres": [
+      "动作",
+      "剧情",
+      "历史"
+    ],
+    "directors": [
+      "黑泽明"
+    ],
+    "overview": "日本战国时代，垂垂老矣的一文字家领主秀虎决定将家业分给三个儿子。幼子三郎直言相谏被逐，此后兄弟阋墙、父子反目，家族在自相残杀中走向覆灭。",
+    "cast": [
+      "仲代达矢",
+      "寺尾聪",
+      "根津甚八",
+      "隆大介"
+    ],
+    "runtime": 162,
+    "releaseDate": "1985-06-01",
     "status": "towatch",
     "poster": "posters/11645.jpg",
     "backdrop": "stills/11645.webp",
     "ratings": {
-      "tmdb": { "score": 8.0, "votes": 1871 },
-      "imdb": { "score": 8.2, "votes": null },
-      "douban": { "score": 8.9, "votes": null }
+      "tmdb": {
+        "score": 8.0,
+        "votes": 1871
+      },
+      "imdb": {
+        "score": 8.2,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.9,
+        "votes": null
+      }
     },
-    "personal": { "rating": null, "comment": null },
+    "personal": {
+      "rating": null,
+      "comment": null
+    },
     "order": 2,
     "updatedAt": "2026-10-20"
   },
@@ -45,18 +99,47 @@
     "title": "伊甸湖",
     "originalTitle": "Eden Lake",
     "year": 2008,
-    "genres": ["恐怖", "惊悚"],
-    "directors": ["詹姆斯·沃特金斯"],
+    "genres": [
+      "恐怖",
+      "惊悚"
+    ],
+    "directors": [
+      "詹姆斯·沃特金斯"
+    ],
+    "overview": "一对热恋中的情侣前往偏僻湖畔度假，却与一群当地少年发生口角。食物与车钥匙不翼而飞后，两人试图徒步穿过丛林求助，不料遭到少年们愈发残酷无情的围猎，陷入求生噩梦。",
+    "cast": [
+      "凯利·蕾莉",
+      "迈克尔·法斯宾德",
+      "杰克·奥康奈尔",
+      "托马斯·图尔格斯"
+    ],
+    "runtime": 91,
+    "releaseDate": "2008-09-12",
     "status": "watched",
     "poster": "posters/13510.jpg",
     "backdrop": "stills/13510.webp",
     "ratings": {
-      "tmdb": { "score": 6.8, "votes": 2133 },
-      "imdb": { "score": 6.7, "votes": null },
-      "douban": { "score": 7.7, "votes": null }
+      "tmdb": {
+        "score": 6.8,
+        "votes": 2133
+      },
+      "imdb": {
+        "score": 6.7,
+        "votes": null
+      },
+      "douban": {
+        "score": 7.7,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "约400万美元", "note": "全球" },
-    "personal": { "rating": 4, "comment": null },
+    "boxOffice": {
+      "amount": "约400万美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 4,
+      "comment": null
+    },
     "order": 3,
     "updatedAt": "2026-10-20"
   },
@@ -66,18 +149,50 @@
     "title": "复仇者联盟3：无限战争",
     "originalTitle": "Avengers: Infinity War",
     "year": 2018,
-    "genres": ["冒险", "动作", "科幻"],
-    "directors": ["乔·罗素"],
+    "genres": [
+      "冒险",
+      "动作",
+      "科幻"
+    ],
+    "directors": [
+      "乔·罗素"
+    ],
+    "overview": "灭霸为集齐六颗无限宝石，对宇宙发起全面进攻。复仇者联盟与银河护卫队等超级英雄必须不惜一切代价，阻止灭霸以响指抹除半数生灵的疯狂计划。",
+    "cast": [
+      "小罗伯特·唐尼",
+      "克里斯·海姆斯沃斯",
+      "马克·鲁法洛",
+      "克里斯·埃文斯",
+      "斯嘉丽·约翰逊",
+      "乔什·布洛林"
+    ],
+    "runtime": 149,
+    "releaseDate": "2018-04-27",
     "status": "watched",
     "poster": "posters/299536.jpg",
     "backdrop": "stills/299536.webp",
     "ratings": {
-      "tmdb": { "score": 8.2, "votes": 32450 },
-      "imdb": { "score": 8.4, "votes": null },
-      "douban": { "score": 8.1, "votes": null }
+      "tmdb": {
+        "score": 8.2,
+        "votes": 32450
+      },
+      "imdb": {
+        "score": 8.4,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.1,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "20.5亿美元", "note": "全球" },
-    "personal": { "rating": 4, "comment": null },
+    "boxOffice": {
+      "amount": "20.5亿美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 4,
+      "comment": null
+    },
     "order": 4,
     "updatedAt": "2026-10-20"
   },
@@ -87,18 +202,50 @@
     "title": "复仇者联盟4：终局之战",
     "originalTitle": "Avengers: Endgame",
     "year": 2019,
-    "genres": ["冒险", "科幻", "动作"],
-    "directors": ["安东尼·罗素"],
+    "genres": [
+      "冒险",
+      "科幻",
+      "动作"
+    ],
+    "directors": [
+      "安东尼·罗素"
+    ],
+    "overview": "灭霸打响响指后，宇宙半数生命灰飞烟灭。幸存的复仇者们重新集结，借助量子领域穿越时空收集无限宝石，试图逆转灭霸的所作所为，与宿敌展开终极对决。",
+    "cast": [
+      "小罗伯特·唐尼",
+      "克里斯·埃文斯",
+      "克里斯·海姆斯沃斯",
+      "马克·鲁法洛",
+      "斯嘉丽·约翰逊",
+      "杰瑞米·雷纳"
+    ],
+    "runtime": 181,
+    "releaseDate": "2019-04-26",
     "status": "watched",
     "poster": "posters/299534.jpg",
     "backdrop": "stills/299534.webp",
     "ratings": {
-      "tmdb": { "score": 8.2, "votes": 28180 },
-      "imdb": { "score": 8.4, "votes": null },
-      "douban": { "score": 8.5, "votes": null }
+      "tmdb": {
+        "score": 8.2,
+        "votes": 28180
+      },
+      "imdb": {
+        "score": 8.4,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.5,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "28亿美元", "note": "全球" },
-    "personal": { "rating": 4, "comment": null },
+    "boxOffice": {
+      "amount": "28亿美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 4,
+      "comment": null
+    },
     "order": 5,
     "updatedAt": "2026-10-20"
   },
@@ -108,18 +255,51 @@
     "title": "奥德赛",
     "originalTitle": "The Odyssey",
     "year": 2026,
-    "genres": ["冒险", "动作", "奇幻"],
-    "directors": ["克里斯托弗·诺兰"],
+    "genres": [
+      "冒险",
+      "动作",
+      "奇幻"
+    ],
+    "directors": [
+      "克里斯托弗·诺兰"
+    ],
+    "overview": "改编自荷马史诗。特洛伊战争结束后，希腊国王奥德修斯踏上漫长而凶险的归乡之路，一路遭遇独眼巨人、塞壬与仙女卡吕普索等神话人物，只为与妻子佩涅洛佩重逢。",
+    "cast": [
+      "马特·达蒙",
+      "汤姆·霍兰德",
+      "安妮·海瑟薇",
+      "罗伯特·帕丁森",
+      "露皮塔·尼永奥",
+      "赞达亚",
+      "查理兹·塞隆"
+    ],
+    "runtime": 173,
+    "releaseDate": "2026-07-17",
     "status": "watched",
     "poster": "posters/1368337.jpg",
     "backdrop": "stills/1368337.webp",
     "ratings": {
-      "tmdb": { "score": 8.0, "votes": 1721 },
-      "imdb": { "score": 8.5, "votes": null },
-      "douban": { "score": 8.6, "votes": null }
+      "tmdb": {
+        "score": 8.0,
+        "votes": 1721
+      },
+      "imdb": {
+        "score": 8.5,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.6,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "约17.7亿美元", "note": "全球（映中）" },
-    "personal": { "rating": 5, "comment": null },
+    "boxOffice": {
+      "amount": "约17.7亿美元",
+      "note": "全球（映中）"
+    },
+    "personal": {
+      "rating": 5,
+      "comment": null
+    },
     "order": 6,
     "updatedAt": "2026-10-20"
   },
@@ -129,17 +309,42 @@
     "title": "女魔头",
     "originalTitle": "Monster",
     "year": 2003,
-    "genres": ["犯罪", "剧情"],
-    "directors": ["派蒂·杰金斯"],
+    "genres": [
+      "犯罪",
+      "剧情"
+    ],
+    "directors": [
+      "派蒂·杰金斯"
+    ],
+    "overview": "改编自真实连环杀人案。童年饱受虐待的妓女艾琳·沃诺斯与希尔比相恋后，为维持生计重操旧业，在反抗嫖客暴行时自卫杀人，最终一步步沦为公路连环杀手。",
+    "cast": [
+      "查理兹·塞隆",
+      "克里斯蒂娜·里奇",
+      "布鲁斯·邓恩"
+    ],
+    "runtime": 109,
+    "releaseDate": "2003-12-24",
     "status": "watched",
     "poster": "posters/504.jpg",
     "backdrop": "stills/504.webp",
     "ratings": {
-      "tmdb": { "score": 7.2, "votes": 2607 },
-      "imdb": { "score": 7.3, "votes": null },
-      "douban": { "score": 7.7, "votes": null }
+      "tmdb": {
+        "score": 7.2,
+        "votes": 2607
+      },
+      "imdb": {
+        "score": 7.3,
+        "votes": null
+      },
+      "douban": {
+        "score": 7.7,
+        "votes": null
+      }
     },
-    "personal": { "rating": null, "comment": null },
+    "personal": {
+      "rating": null,
+      "comment": null
+    },
     "order": 7,
     "updatedAt": "2026-10-20"
   },
@@ -149,17 +354,43 @@
     "title": "安德烈·卢布廖夫",
     "originalTitle": "Андрей Рублёв",
     "year": 1966,
-    "genres": ["剧情", "历史"],
-    "directors": ["安德烈·塔可夫斯基"],
+    "genres": [
+      "剧情",
+      "历史"
+    ],
+    "directors": [
+      "安德烈·塔可夫斯基"
+    ],
+    "overview": "15世纪初，鞑靼人的铁蹄蹂躏着四分五裂的俄罗斯大地。圣像画家安德烈·卢布廖夫在战乱与苦难中辗转，亲历信仰与现实的激烈冲突，最终在沉默中追寻艺术与精神的救赎。",
+    "cast": [
+      "阿纳托利·索洛尼岑",
+      "伊万·拉皮科夫",
+      "尼古拉·格林科",
+      "尼古拉·谢尔盖耶夫"
+    ],
+    "runtime": 183,
+    "releaseDate": "1966-12-16",
     "status": "towatch",
     "poster": "posters/895.jpg",
     "backdrop": "stills/895.webp",
     "ratings": {
-      "tmdb": { "score": 7.9, "votes": 962 },
-      "imdb": { "score": 8.0, "votes": null },
-      "douban": { "score": 8.9, "votes": null }
+      "tmdb": {
+        "score": 7.9,
+        "votes": 962
+      },
+      "imdb": {
+        "score": 8.0,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.9,
+        "votes": null
+      }
     },
-    "personal": { "rating": null, "comment": null },
+    "personal": {
+      "rating": null,
+      "comment": null
+    },
     "order": 8,
     "updatedAt": "2026-10-20"
   },
@@ -169,17 +400,42 @@
     "title": "巅峰猎杀",
     "originalTitle": "Apex",
     "year": 2026,
-    "genres": ["动作", "惊悚"],
-    "directors": ["巴塔萨·科马库"],
+    "genres": [
+      "动作",
+      "惊悚"
+    ],
+    "directors": [
+      "巴塔萨·科马库"
+    ],
+    "overview": "攀岩高手莎莎在丈夫遇难后，独自前往澳大利亚荒野寻求疗愈，却落入当地猎人本的猎杀游戏。在无枪无援的绝境中，她只能凭借攀爬技能与求生意志，与这名连环杀手展开残酷的猫鼠追逐。",
+    "cast": [
+      "查理兹·塞隆",
+      "塔伦·埃哲顿",
+      "艾瑞克·巴纳"
+    ],
+    "runtime": 95,
+    "releaseDate": "2026-04-24",
     "status": "watched",
     "poster": "posters/1318447.jpg",
     "backdrop": "stills/1318447.webp",
     "ratings": {
-      "tmdb": { "score": 6.9, "votes": 1855 },
-      "imdb": { "score": 6.2, "votes": null },
-      "douban": { "score": 6.3, "votes": null }
+      "tmdb": {
+        "score": 6.9,
+        "votes": 1855
+      },
+      "imdb": {
+        "score": 6.2,
+        "votes": null
+      },
+      "douban": {
+        "score": 6.3,
+        "votes": null
+      }
     },
-    "personal": { "rating": 3, "comment": null },
+    "personal": {
+      "rating": 3,
+      "comment": null
+    },
     "order": 9,
     "updatedAt": "2026-10-20"
   },
@@ -189,18 +445,48 @@
     "title": "痴迷",
     "originalTitle": "Obsession",
     "year": 2026,
-    "genres": ["恐怖", "惊悚"],
-    "directors": ["Curry Barker"],
+    "genres": [
+      "恐怖",
+      "惊悚"
+    ],
+    "directors": [
+      "Curry Barker"
+    ],
+    "overview": "音像店店员贝尔暗恋同事妮基却不敢表白，为赢得她的心，他折断了神秘许愿柳枝，许愿让她比任何人都爱自己。愿望成真后，妮基的爱却变得极端痴迷、愈发疯狂，贝尔这才发现有些愿望要付出黑暗代价。",
+    "cast": [
+      "迈克尔·约翰斯顿",
+      "英德·纳瓦雷特",
+      "库珀·汤姆林森",
+      "梅根·劳莱斯",
+      "安迪·里希特"
+    ],
+    "runtime": 108,
+    "releaseDate": "2026-05-15",
     "status": "watched",
     "poster": "posters/1339713.jpg",
     "backdrop": "stills/1339713.webp",
     "ratings": {
-      "tmdb": { "score": 8.2, "votes": 3862 },
-      "imdb": { "score": 8.1, "votes": null },
-      "douban": { "score": 7.6, "votes": null }
+      "tmdb": {
+        "score": 8.2,
+        "votes": 3862
+      },
+      "imdb": {
+        "score": 8.1,
+        "votes": null
+      },
+      "douban": {
+        "score": 7.6,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "5.2亿美元", "note": "全球" },
-    "personal": { "rating": 4, "comment": null },
+    "boxOffice": {
+      "amount": "5.2亿美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 4,
+      "comment": null
+    },
     "order": 10,
     "updatedAt": "2026-10-20"
   },
@@ -210,17 +496,40 @@
     "title": "着魔",
     "originalTitle": "Possession",
     "year": 1981,
-    "genres": ["恐怖"],
-    "directors": ["安德列·祖拉维斯基"],
+    "genres": [
+      "恐怖"
+    ],
+    "directors": [
+      "安德列·祖拉维斯基"
+    ],
+    "overview": "间谍马克完成任务回到西柏林，发现妻子安娜执意离婚，并开始表现出越来越令人不安的异常行为。随着马克的追查，一桩超乎理解的恐怖真相逐渐浮出水面。",
+    "cast": [
+      "伊莎贝尔·阿佳妮",
+      "山姆·尼尔"
+    ],
+    "runtime": 124,
+    "releaseDate": "1981-05-27",
     "status": "watched",
     "poster": "posters/21484.jpg",
     "backdrop": "stills/21484.webp",
     "ratings": {
-      "tmdb": { "score": 7.3, "votes": 1404 },
-      "imdb": { "score": 7.3, "votes": null },
-      "douban": { "score": 8.0, "votes": null }
+      "tmdb": {
+        "score": 7.3,
+        "votes": 1404
+      },
+      "imdb": {
+        "score": 7.3,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.0,
+        "votes": null
+      }
     },
-    "personal": { "rating": 5, "comment": null },
+    "personal": {
+      "rating": 5,
+      "comment": null
+    },
     "order": 11,
     "updatedAt": "2026-10-20"
   },
@@ -230,16 +539,38 @@
     "title": "糖精",
     "originalTitle": "Saccharine",
     "year": 2026,
-    "genres": ["恐怖"],
-    "directors": ["Natalie Erika James"],
+    "genres": [
+      "恐怖"
+    ],
+    "directors": [
+      "Natalie Erika James"
+    ],
+    "overview": "医学生哈娜长期饱受身材焦虑与暴食困扰，为减肥自制以人类骨灰为核心原料的减肥药。体重骤降的同时，她却被所食用之人的怨灵纠缠，生活逐渐陷入噩梦。",
+    "cast": [
+      "米多莉·弗朗西斯",
+      "丹妮尔·麦克唐纳",
+      "玛德琳·麦登",
+      "罗伯特·泰勒"
+    ],
+    "runtime": 113,
+    "releaseDate": "2026-05-22",
     "status": "watched",
     "poster": "posters/1363387.jpg",
     "backdrop": "stills/1363387.webp",
     "ratings": {
-      "tmdb": { "score": 6.6, "votes": 78 },
-      "imdb": { "score": 5.9, "votes": null }
+      "tmdb": {
+        "score": 6.6,
+        "votes": 78
+      },
+      "imdb": {
+        "score": 5.9,
+        "votes": null
+      }
     },
-    "personal": { "rating": 3, "comment": null },
+    "personal": {
+      "rating": 3,
+      "comment": null
+    },
     "order": 12,
     "updatedAt": "2026-10-20"
   },
@@ -249,17 +580,43 @@
     "title": "美国X档案",
     "originalTitle": "American History X",
     "year": 1998,
-    "genres": ["剧情"],
-    "directors": ["托尼·凯耶"],
+    "genres": [
+      "剧情"
+    ],
+    "directors": [
+      "托尼·凯耶"
+    ],
+    "overview": "德瑞克因父亲被黑人毒贩射杀而走上新纳粹之路，射杀两人后入狱。狱中他历经顿悟、逐渐摆脱仇恨，出狱后却发现弟弟丹尼正步其后尘，走向同样的深渊。",
+    "cast": [
+      "爱德华·诺顿",
+      "爱德华·弗朗",
+      "比佛莉·德安姬罗",
+      "伊桑·苏普利",
+      "斯泰西·基齐"
+    ],
+    "runtime": 119,
+    "releaseDate": "1998-10-30",
     "status": "watched",
     "poster": "posters/73.jpg",
     "backdrop": "stills/73.webp",
     "ratings": {
-      "tmdb": { "score": 8.3, "votes": 12827 },
-      "imdb": { "score": 8.5, "votes": null },
-      "douban": { "score": 8.4, "votes": null }
+      "tmdb": {
+        "score": 8.3,
+        "votes": 12827
+      },
+      "imdb": {
+        "score": 8.5,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.4,
+        "votes": null
+      }
     },
-    "personal": { "rating": 5, "comment": null },
+    "personal": {
+      "rating": 5,
+      "comment": null
+    },
     "order": 13,
     "updatedAt": "2026-10-20"
   },
@@ -269,17 +626,44 @@
     "title": "致命拜访",
     "originalTitle": "The Invasion",
     "year": 2007,
-    "genres": ["恐怖", "悬疑", "科幻", "惊悚"],
-    "directors": ["奥利弗·希施比格尔"],
+    "genres": [
+      "恐怖",
+      "悬疑",
+      "科幻",
+      "惊悚"
+    ],
+    "directors": [
+      "奥利弗·希施比格尔"
+    ],
+    "overview": "一艘太空船坠毁后，外星生命体借碎片抵达地球，将人类逐渐变成情感麻木的异类。精神科医生卡罗尔发现儿子奥利弗是对抗病毒的希望，遂带着他踏上逃亡之旅。",
+    "cast": [
+      "妮可·基德曼",
+      "丹尼尔·克雷格",
+      "杰瑞米·诺森"
+    ],
+    "runtime": 99,
+    "releaseDate": "2007-08-17",
     "status": "watched",
     "poster": "posters/4858.jpg",
     "backdrop": "stills/4858.webp",
     "ratings": {
-      "tmdb": { "score": 6.1, "votes": 1793 },
-      "imdb": { "score": 5.9, "votes": null },
-      "douban": { "score": 6.6, "votes": null }
+      "tmdb": {
+        "score": 6.1,
+        "votes": 1793
+      },
+      "imdb": {
+        "score": 5.9,
+        "votes": null
+      },
+      "douban": {
+        "score": 6.6,
+        "votes": null
+      }
     },
-    "personal": { "rating": 3, "comment": null },
+    "personal": {
+      "rating": 3,
+      "comment": null
+    },
     "order": 14,
     "updatedAt": "2026-10-20"
   },
@@ -289,18 +673,48 @@
     "title": "菜单",
     "originalTitle": "The Menu",
     "year": 2022,
-    "genres": ["喜剧", "恐怖"],
-    "directors": ["马克·迈洛德"],
+    "genres": [
+      "喜剧",
+      "恐怖"
+    ],
+    "directors": [
+      "马克·迈洛德"
+    ],
+    "overview": "一对年轻男女受邀前往偏远小岛上的高级餐厅，品尝名厨斯洛维克精心打造的奢华晚宴。随着一道道菜式上桌，这场晚餐逐渐演变成一场令人不寒而栗的致命盛宴。",
+    "cast": [
+      "拉尔夫·费因斯",
+      "安雅·泰勒-乔伊",
+      "尼古拉斯·霍尔特",
+      "周洪",
+      "珍妮·麦克蒂尔"
+    ],
+    "runtime": 107,
+    "releaseDate": "2022-11-18",
     "status": "watched",
     "poster": "posters/593643.jpg",
     "backdrop": "stills/593643.webp",
     "ratings": {
-      "tmdb": { "score": 7.2, "votes": 6565 },
-      "imdb": { "score": 7.2, "votes": null },
-      "douban": { "score": 6.4, "votes": null }
+      "tmdb": {
+        "score": 7.2,
+        "votes": 6565
+      },
+      "imdb": {
+        "score": 7.2,
+        "votes": null
+      },
+      "douban": {
+        "score": 6.4,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "7900万美元", "note": "全球" },
-    "personal": { "rating": 2, "comment": null },
+    "boxOffice": {
+      "amount": "7900万美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 2,
+      "comment": null
+    },
     "order": 15,
     "updatedAt": "2026-10-20"
   },
@@ -310,18 +724,50 @@
     "title": "蜘蛛侠：崭新之日",
     "originalTitle": "Spider-Man: Brand New Day",
     "year": 2026,
-    "genres": ["科幻", "动作", "冒险"],
-    "directors": ["德斯汀·丹尼尔·克雷顿"],
+    "genres": [
+      "科幻",
+      "动作",
+      "冒险"
+    ],
+    "directors": [
+      "德斯汀·丹尼尔·克雷顿"
+    ],
+    "overview": "距《英雄无归》四年后，被全世界遗忘的彼得·帕克独自以全职蜘蛛侠身份守护纽约。日益沉重的责任与压力引发身体异变，他求助绿巨人班纳博士，同时多方邪恶势力趁虚而入，纽约再度陷入危机。",
+    "cast": [
+      "汤姆·霍兰德",
+      "赞达亚",
+      "萨迪·辛克",
+      "雅各布·巴塔伦",
+      "乔·博恩瑟",
+      "马克·鲁法洛"
+    ],
+    "runtime": 145,
+    "releaseDate": "2026-07-31",
     "status": "watched",
     "poster": "posters/969681.jpg",
     "backdrop": "stills/969681.webp",
     "ratings": {
-      "tmdb": { "score": 7.6, "votes": 40 },
-      "imdb": { "score": 8.2, "votes": null },
-      "douban": { "score": 7.8, "votes": null }
+      "tmdb": {
+        "score": 7.6,
+        "votes": 40
+      },
+      "imdb": {
+        "score": 8.2,
+        "votes": null
+      },
+      "douban": {
+        "score": 7.8,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "约25亿美元", "note": "全球（映中）" },
-    "personal": { "rating": 4, "comment": null },
+    "boxOffice": {
+      "amount": "约25亿美元",
+      "note": "全球（映中）"
+    },
+    "personal": {
+      "rating": 4,
+      "comment": null
+    },
     "order": 16,
     "updatedAt": "2026-10-20"
   },
@@ -331,18 +777,50 @@
     "title": "蜘蛛侠：英雄无归",
     "originalTitle": "Spider-Man: No Way Home",
     "year": 2021,
-    "genres": ["动作", "冒险", "科幻"],
-    "directors": ["Jon Watts"],
+    "genres": [
+      "动作",
+      "冒险",
+      "科幻"
+    ],
+    "directors": [
+      "Jon Watts"
+    ],
+    "overview": "蜘蛛侠的身份曝光后生活陷入混乱，他求助于奇异博士改写现实，却意外打开多元宇宙通道，引来历代反派。为挽回局面，他必须在两位蜘蛛侠前辈的帮助下力挽狂澜。",
+    "cast": [
+      "汤姆·霍兰德",
+      "赞达亚",
+      "本尼迪克特·康伯巴奇",
+      "雅各布·巴塔伦",
+      "玛丽莎·托梅",
+      "威廉·达福"
+    ],
+    "runtime": 148,
+    "releaseDate": "2021-12-17",
     "status": "watched",
     "poster": "posters/634649.jpg",
     "backdrop": "stills/634649.webp",
     "ratings": {
-      "tmdb": { "score": 7.9, "votes": 22349 },
-      "imdb": { "score": 8.1, "votes": null },
-      "douban": { "score": 6.6, "votes": null }
+      "tmdb": {
+        "score": 7.9,
+        "votes": 22349
+      },
+      "imdb": {
+        "score": 8.1,
+        "votes": null
+      },
+      "douban": {
+        "score": 6.6,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "19.2亿美元", "note": "全球" },
-    "personal": { "rating": 3, "comment": null },
+    "boxOffice": {
+      "amount": "19.2亿美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 3,
+      "comment": null
+    },
     "order": 17,
     "updatedAt": "2026-10-20"
   },
@@ -352,18 +830,49 @@
     "title": "超凡蜘蛛侠2",
     "originalTitle": "The Amazing Spider-Man 2",
     "year": 2014,
-    "genres": ["动作", "冒险", "科幻"],
-    "directors": ["马克·韦伯"],
+    "genres": [
+      "动作",
+      "冒险",
+      "科幻"
+    ],
+    "directors": [
+      "马克·韦伯"
+    ],
+    "overview": "彼得·帕克一面与格温相恋，一面以蜘蛛侠身份打击犯罪。新反派“电光人”与昔日好友哈利·奥斯本相继出现，帕克不得不面对更大威胁，并逐渐揭开自己身世的新线索。",
+    "cast": [
+      "安德鲁·加菲尔德",
+      "艾玛·斯通",
+      "杰米·福克斯",
+      "戴恩·德哈恩",
+      "莎莉·菲尔德"
+    ],
+    "runtime": 142,
+    "releaseDate": "2014-05-02",
     "status": "watched",
     "poster": "posters/102382.jpg",
     "backdrop": "stills/102382.webp",
     "ratings": {
-      "tmdb": { "score": 6.5, "votes": 14420 },
-      "imdb": { "score": 6.6, "votes": null },
-      "douban": { "score": 7.8, "votes": null }
+      "tmdb": {
+        "score": 6.5,
+        "votes": 14420
+      },
+      "imdb": {
+        "score": 6.6,
+        "votes": null
+      },
+      "douban": {
+        "score": 7.8,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "7.1亿美元", "note": "全球" },
-    "personal": { "rating": 5, "comment": null },
+    "boxOffice": {
+      "amount": "7.1亿美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 5,
+      "comment": null
+    },
     "order": 18,
     "updatedAt": "2026-10-20"
   },
@@ -373,17 +882,45 @@
     "title": "阿拉伯的劳伦斯",
     "originalTitle": "Lawrence of Arabia",
     "year": 1962,
-    "genres": ["冒险", "历史", "战争"],
-    "directors": ["大卫·里恩"],
+    "genres": [
+      "冒险",
+      "历史",
+      "战争"
+    ],
+    "directors": [
+      "大卫·里恩"
+    ],
+    "overview": "一战期间，英国情报军官劳伦斯深入四分五裂的阿拉伯半岛，团结各部族，率领游击队抗击奥斯曼土耳其。屡建战功后，他却陷入复杂政治外交的困境，怀着复杂心情离去。",
+    "cast": [
+      "彼得·奥图尔",
+      "亚历克·吉尼斯",
+      "奥马尔·沙里夫",
+      "安东尼·奎恩",
+      "杰克·霍金斯"
+    ],
+    "runtime": 216,
+    "releaseDate": "1962-12-10",
     "status": "towatch",
     "poster": "posters/947.jpg",
     "backdrop": "stills/947.webp",
     "ratings": {
-      "tmdb": { "score": 8.0, "votes": 3511 },
-      "imdb": { "score": 8.3, "votes": null },
-      "douban": { "score": 8.7, "votes": null }
+      "tmdb": {
+        "score": 8.0,
+        "votes": 3511
+      },
+      "imdb": {
+        "score": 8.3,
+        "votes": null
+      },
+      "douban": {
+        "score": 8.7,
+        "votes": null
+      }
     },
-    "personal": { "rating": null, "comment": null },
+    "personal": {
+      "rating": null,
+      "comment": null
+    },
     "order": 19,
     "updatedAt": "2026-10-20"
   },
@@ -393,18 +930,50 @@
     "title": "雷霆特攻队",
     "originalTitle": "Thunderbolts*",
     "year": 2025,
-    "genres": ["动作", "科幻", "冒险"],
-    "directors": ["杰克·施莱尔"],
+    "genres": [
+      "动作",
+      "科幻",
+      "冒险"
+    ],
+    "directors": [
+      "杰克·施莱尔"
+    ],
+    "overview": "一群昔日反派或灰色地带角色被召集组队执行任务，却发现陷入死亡陷阱。他们被迫面对各自的黑暗过往，共同对抗强大的新威胁，在危机中完成自我救赎。",
+    "cast": [
+      "弗洛伦斯·皮尤",
+      "塞巴斯蒂安·斯坦",
+      "大卫·哈伯",
+      "怀亚特·罗素",
+      "汉娜·约翰-卡门",
+      "刘易斯·普尔曼"
+    ],
+    "runtime": 126,
+    "releaseDate": "2025-05-02",
     "status": "watched",
     "poster": "posters/986056.jpg",
     "backdrop": "stills/986056.webp",
     "ratings": {
-      "tmdb": { "score": 7.3, "votes": 3753 },
-      "imdb": { "score": 7.1, "votes": null },
-      "douban": { "score": 6.8, "votes": null }
+      "tmdb": {
+        "score": 7.3,
+        "votes": 3753
+      },
+      "imdb": {
+        "score": 7.1,
+        "votes": null
+      },
+      "douban": {
+        "score": 6.8,
+        "votes": null
+      }
     },
-    "boxOffice": { "amount": "3.8亿美元", "note": "全球" },
-    "personal": { "rating": 4, "comment": null },
+    "boxOffice": {
+      "amount": "3.8亿美元",
+      "note": "全球"
+    },
+    "personal": {
+      "rating": 4,
+      "comment": null
+    },
     "order": 20,
     "updatedAt": "2026-10-20"
   }
