@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="system">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeremy都做了什么 — Jeremy's</title>
+  <meta name="description" content="Jeremy 的其他兴趣板块：游戏、书籍、动画等。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://jeremy-movies.com/everything/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Jeremy's">
+  <meta property="og:title" content="Jeremy都做了什么">
+  <meta property="og:url" content="https://jeremy-movies.com/everything/">
+  <meta property="og:locale" content="zh_CN">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark' || t === 'system') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <header class="nav" data-nav>
+    <a class="nav-logo" href="/">Jeremy's</a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="/" class="nav-link">电影</a>
+      <a href="/everything/" class="nav-link is-active" aria-current="page">Jeremy都做了什么</a>
+      <a href="/about/" class="nav-link">关于</a>
+    </nav>
+    <button class="nav-theme" data-theme-toggle aria-label="切换主题" title="切换主题">🌙</button>
+    <button class="nav-burger" data-nav-burger aria-label="菜单" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <h1 class="hero-title">Jeremy都做了什么</h1>
+      <p class="hero-sub">电影之外，Jeremy 的其他兴趣与收藏</p>
+    </section>
+
+    <section class="poster-grid container" style="grid-template-columns:repeat(3,1fr);">
+      <a class="board-card" href="/" style="text-decoration:none;">
+        <div class="board-icon">🎬</div>
+        <div class="board-title">电影</div>
+        <div class="board-badge">主板块</div>
+      </a>
+      <div class="board-card">
+        <div class="board-icon">🎮</div>
+        <div class="board-title">游戏</div>
+        <div class="board-badge">即将上线</div>
+      </div>
+      <div class="board-card">
+        <div class="board-icon">📚</div>
+        <div class="board-title">书籍</div>
+        <div class="board-badge">即将上线</div>
+      </div>
+      <div class="board-card">
+        <div class="board-icon">✨</div>
+        <div class="board-title">动画</div>
+        <div class="board-badge">即将上线</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Jeremy</p>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

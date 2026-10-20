@@ -1,522 +1,138 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="system">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jeremy's Movies — 电影海报墙</title>
-  <meta name="description" content="Jeremy 的个人电影收藏海报墙，收录 20 部经典与当代影片。">
+  <title>Jeremy's — 电影</title>
+  <meta name="description" content="Jeremy 的个人内容收藏：电影海报墙，收录经典与当代影片。">
   <meta name="author" content="Jeremy">
 
-  <!-- ===== SEO / 收录配置（seo-specialist 生成） ===== -->
+  <!-- ===== SEO / 收录配置 ===== -->
   <link rel="canonical" href="https://jeremy-movies.com/">
   <meta name="robots" content="index,follow">
 
   <!-- Open Graph（社交分享预览） -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Jeremy's Movies">
-  <meta property="og:title" content="Jeremy's Movies — 电影海报墙">
-  <meta property="og:description" content="Jeremy 的个人电影收藏海报墙，收录 20 部经典与当代影片。">
+  <meta property="og:site_name" content="Jeremy's">
+  <meta property="og:title" content="Jeremy's — 电影海报墙">
+  <meta property="og:description" content="Jeremy 的个人电影收藏海报墙，收录经典与当代影片。">
   <meta property="og:url" content="https://jeremy-movies.com/">
   <meta property="og:image" content="https://jeremy-movies.com/posters/62.jpg">
   <meta property="og:locale" content="zh_CN">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Jeremy's Movies — 电影海报墙">
-  <meta name="twitter:description" content="Jeremy 的个人电影收藏海报墙，收录 20 部经典与当代影片。">
+  <meta name="twitter:title" content="Jeremy's — 电影海报墙">
+  <meta name="twitter:description" content="Jeremy 的个人电影收藏海报墙，收录经典与当代影片。">
   <meta name="twitter:image" content="https://jeremy-movies.com/posters/62.jpg">
 
-  <link rel="stylesheet" href="styles.css">
-
-  <!-- JSON-LD 结构化数据（ItemList + Movie）：仅供搜索引擎读取的元数据，非交互 JS，不影响零交互设计 -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Jeremy's Movies — 电影海报墙",
-    "description": "Jeremy 的个人电影收藏海报墙，收录 20 部经典与当代影片。",
-    "numberOfItems": 20,
-    "itemListOrder": "https://schema.org/ItemListOrderAscending",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "item": {
-          "@type": "Movie",
-          "name": "2001太空漫游",
-          "alternateName": "2001: A Space Odyssey",
-          "datePublished": "1968",
-          "director": { "@type": "Person", "name": "斯坦利·库布里克" },
-          "genre": ["科幻", "悬疑", "冒险"],
-          "image": "https://jeremy-movies.com/posters/62.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.0", "ratingCount": 12795, "bestRating": 10, "worstRating": 0 }
+  <!-- 主题早注入：避免首屏闪烁（FOUC），须在样式表加载前执行 -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark' || t === 'system') {
+          document.documentElement.setAttribute('data-theme', t);
         }
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "item": {
-          "@type": "Movie",
-          "name": "乱",
-          "datePublished": "1985",
-          "director": { "@type": "Person", "name": "黑泽明" },
-          "genre": ["动作", "剧情", "历史"],
-          "image": "https://jeremy-movies.com/posters/11645.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.0", "ratingCount": 1871, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "item": {
-          "@type": "Movie",
-          "name": "伊甸湖",
-          "alternateName": "Eden Lake",
-          "datePublished": "2008",
-          "director": { "@type": "Person", "name": "詹姆斯·沃特金斯" },
-          "genre": ["恐怖", "惊悚"],
-          "image": "https://jeremy-movies.com/posters/13510.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "6.8", "ratingCount": 2133, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "item": {
-          "@type": "Movie",
-          "name": "复仇者联盟3：无限战争",
-          "alternateName": "Avengers: Infinity War",
-          "datePublished": "2018",
-          "director": { "@type": "Person", "name": "乔·罗素" },
-          "genre": ["冒险", "动作", "科幻"],
-          "image": "https://jeremy-movies.com/posters/299536.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.2", "ratingCount": 32450, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 5,
-        "item": {
-          "@type": "Movie",
-          "name": "复仇者联盟4：终局之战",
-          "alternateName": "Avengers: Endgame",
-          "datePublished": "2019",
-          "director": { "@type": "Person", "name": "安东尼·罗素" },
-          "genre": ["冒险", "科幻", "动作"],
-          "image": "https://jeremy-movies.com/posters/299534.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.2", "ratingCount": 28180, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 6,
-        "item": {
-          "@type": "Movie",
-          "name": "奥德赛",
-          "alternateName": "The Odyssey",
-          "datePublished": "2026",
-          "director": { "@type": "Person", "name": "克里斯托弗·诺兰" },
-          "genre": ["冒险", "动作", "奇幻"],
-          "image": "https://jeremy-movies.com/posters/1368337.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.0", "ratingCount": 1721, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 7,
-        "item": {
-          "@type": "Movie",
-          "name": "女魔头",
-          "alternateName": "Monster",
-          "datePublished": "2003",
-          "director": { "@type": "Person", "name": "派蒂·杰金斯" },
-          "genre": ["犯罪", "剧情"],
-          "image": "https://jeremy-movies.com/posters/504.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.2", "ratingCount": 2607, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 8,
-        "item": {
-          "@type": "Movie",
-          "name": "安德烈·卢布廖夫",
-          "alternateName": "Андрей Рублёв",
-          "datePublished": "1966",
-          "director": { "@type": "Person", "name": "安德烈·塔可夫斯基" },
-          "genre": ["剧情", "历史"],
-          "image": "https://jeremy-movies.com/posters/895.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.9", "ratingCount": 962, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 9,
-        "item": {
-          "@type": "Movie",
-          "name": "巅峰猎杀",
-          "alternateName": "Apex",
-          "datePublished": "2026",
-          "director": { "@type": "Person", "name": "巴塔萨·科马库" },
-          "genre": ["动作", "惊悚"],
-          "image": "https://jeremy-movies.com/posters/1318447.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "6.9", "ratingCount": 1855, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 10,
-        "item": {
-          "@type": "Movie",
-          "name": "痴迷",
-          "alternateName": "Obsession",
-          "datePublished": "2026",
-          "director": { "@type": "Person", "name": "Curry Barker" },
-          "genre": ["恐怖", "惊悚"],
-          "image": "https://jeremy-movies.com/posters/1339713.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.2", "ratingCount": 3862, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 11,
-        "item": {
-          "@type": "Movie",
-          "name": "着魔",
-          "alternateName": "Possession",
-          "datePublished": "1981",
-          "director": { "@type": "Person", "name": "安德列·祖拉维斯基" },
-          "genre": ["恐怖"],
-          "image": "https://jeremy-movies.com/posters/21484.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.3", "ratingCount": 1404, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 12,
-        "item": {
-          "@type": "Movie",
-          "name": "糖精",
-          "alternateName": "Saccharine",
-          "datePublished": "2026",
-          "director": { "@type": "Person", "name": "Natalie Erika James" },
-          "genre": ["恐怖"],
-          "image": "https://jeremy-movies.com/posters/1363387.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "6.6", "ratingCount": 78, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 13,
-        "item": {
-          "@type": "Movie",
-          "name": "美国X档案",
-          "alternateName": "American History X",
-          "datePublished": "1998",
-          "director": { "@type": "Person", "name": "托尼·凯耶" },
-          "genre": ["剧情"],
-          "image": "https://jeremy-movies.com/posters/73.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.3", "ratingCount": 12827, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 14,
-        "item": {
-          "@type": "Movie",
-          "name": "致命拜访",
-          "alternateName": "The Invasion",
-          "datePublished": "2007",
-          "director": { "@type": "Person", "name": "奥利弗·希施比格尔" },
-          "genre": ["恐怖", "悬疑", "科幻", "惊悚"],
-          "image": "https://jeremy-movies.com/posters/4858.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "6.1", "ratingCount": 1793, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 15,
-        "item": {
-          "@type": "Movie",
-          "name": "菜单",
-          "alternateName": "The Menu",
-          "datePublished": "2022",
-          "director": { "@type": "Person", "name": "马克·迈洛德" },
-          "genre": ["喜剧", "恐怖"],
-          "image": "https://jeremy-movies.com/posters/593643.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.2", "ratingCount": 6565, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 16,
-        "item": {
-          "@type": "Movie",
-          "name": "蜘蛛侠：崭新之日",
-          "alternateName": "Spider-Man: Brand New Day",
-          "datePublished": "2026",
-          "director": { "@type": "Person", "name": "德斯汀·丹尼尔·克雷顿" },
-          "genre": ["科幻", "动作", "冒险"],
-          "image": "https://jeremy-movies.com/posters/969681.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.6", "ratingCount": 40, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 17,
-        "item": {
-          "@type": "Movie",
-          "name": "Spider-Man: No Way Home",
-          "datePublished": "2021",
-          "director": { "@type": "Person", "name": "Jon Watts" },
-          "genre": ["Action", "Adventure", "Science Fiction"],
-          "image": "https://jeremy-movies.com/posters/634649.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.9", "ratingCount": 22349, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 18,
-        "item": {
-          "@type": "Movie",
-          "name": "超凡蜘蛛侠2",
-          "alternateName": "The Amazing Spider-Man 2",
-          "datePublished": "2014",
-          "director": { "@type": "Person", "name": "马克·韦伯" },
-          "genre": ["动作", "冒险", "科幻"],
-          "image": "https://jeremy-movies.com/posters/102382.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "6.5", "ratingCount": 14420, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 19,
-        "item": {
-          "@type": "Movie",
-          "name": "阿拉伯的劳伦斯",
-          "alternateName": "Lawrence of Arabia",
-          "datePublished": "1962",
-          "director": { "@type": "Person", "name": "大卫·里恩" },
-          "genre": ["冒险", "历史", "战争"],
-          "image": "https://jeremy-movies.com/posters/947.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "8.0", "ratingCount": 3511, "bestRating": 10, "worstRating": 0 }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 20,
-        "item": {
-          "@type": "Movie",
-          "name": "雷霆特攻队",
-          "alternateName": "Thunderbolts*",
-          "datePublished": "2025",
-          "director": { "@type": "Person", "name": "杰克·施莱尔" },
-          "genre": ["动作", "科幻", "冒险"],
-          "image": "https://jeremy-movies.com/posters/986056.jpg",
-          "aggregateRating": { "@type": "AggregateRating", "ratingValue": "7.3", "ratingCount": 3753, "bestRating": 10, "worstRating": 0 }
-        }
-      }
-    ]
-  }
+      } catch (e) { /* ignore */ }
+    })();
   </script>
+
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
-  <header class="site-header">
-    <h1>Jeremy's Movies</h1>
-    <p>20 部电影 · 个人海报墙</p>
-    <div class="divider"></div>
+  <!-- 全屏背景层（悬停换背景，Netflix 效果） -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-image bg-image--a"></div>
+    <div class="bg-image bg-image--b"></div>
+    <div class="bg-scrim"></div>
+  </div>
+
+  <!-- 吸顶导航 -->
+  <header class="nav" data-nav>
+    <a class="nav-logo" href="/">Jeremy's</a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="/" class="nav-link is-active" aria-current="page">电影</a>
+      <a href="/everything/" class="nav-link">Jeremy都做了什么</a>
+      <a href="/about/" class="nav-link">关于</a>
+    </nav>
+    <button class="nav-theme" data-theme-toggle aria-label="切换主题" title="切换主题">
+      <svg class="theme-icon icon-light" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      <svg class="theme-icon icon-dark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="theme-icon icon-system" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+    </button>
+    <button class="nav-burger" data-nav-burger aria-label="菜单" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <main>
-    <div class="poster-grid">
+    <!-- Hero -->
+    <section class="hero container">
+      <h1 class="hero-title">电影</h1>
+      <p class="hero-sub">Jeremy 的个人观影记录 · 共 <span data-count>—</span> 部</p>
+      <p class="hero-stat">已看 <strong data-watched>—</strong> · 待看 <strong data-towatch>—</strong></p>
+    </section>
 
-      <article class="poster-card">
-        <img src="posters/62.jpg" alt="2001太空漫游" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">2001太空漫游</div>
-          <div class="year">1968</div>
-          <div class="meta"><span class="score-badge">8.0</span><span>科幻 · 斯坦利·库布里克</span></div>
-        </div>
-      </article>
+    <!-- 页内工具栏 -->
+    <section class="toolbar container">
+      <div class="segmented" role="group" aria-label="状态筛选">
+        <button data-filter="all" aria-pressed="true">全部</button>
+        <button data-filter="watched" aria-pressed="false">已看</button>
+        <button data-filter="towatch" aria-pressed="false">待看</button>
+      </div>
+      <label class="sort">
+        <span class="sort-label">排序</span>
+        <select data-sort>
+          <option value="default">默认</option>
+          <option value="rating">评分</option>
+          <option value="year">年份</option>
+        </select>
+      </label>
+    </section>
 
-      <article class="poster-card">
-        <img src="posters/11645.jpg" alt="乱" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">乱</div>
-          <div class="year">1985</div>
-          <div class="meta"><span class="score-badge">8.0</span><span>动作 · 黑泽明</span></div>
-        </div>
-      </article>
+    <!-- 海报网格（由 JS 数据驱动渲染） -->
+    <section class="poster-grid container" data-grid aria-live="polite"></section>
 
-      <article class="poster-card">
-        <img src="posters/13510.jpg" alt="伊甸湖" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">伊甸湖</div>
-          <div class="year">2008</div>
-          <div class="meta"><span class="score-badge">6.8</span><span>恐怖 · 詹姆斯·沃特金斯</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/299536.jpg" alt="复仇者联盟3：无限战争" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">复仇者联盟3：无限战争</div>
-          <div class="year">2018</div>
-          <div class="meta"><span class="score-badge">8.2</span><span>冒险 · 乔·罗素</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/299534.jpg" alt="复仇者联盟4：终局之战" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">复仇者联盟4：终局之战</div>
-          <div class="year">2019</div>
-          <div class="meta"><span class="score-badge">8.2</span><span>冒险 · 安东尼·罗素</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/1368337.jpg" alt="奥德赛" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">奥德赛</div>
-          <div class="year">2026</div>
-          <div class="meta"><span class="score-badge">8.0</span><span>冒险 · 克里斯托弗·诺兰</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/504.jpg" alt="女魔头" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">女魔头</div>
-          <div class="year">2003</div>
-          <div class="meta"><span class="score-badge">7.2</span><span>犯罪 · 派蒂·杰金斯</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/895.jpg" alt="安德烈·卢布廖夫" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">安德烈·卢布廖夫</div>
-          <div class="year">1966</div>
-          <div class="meta"><span class="score-badge">7.9</span><span>剧情 · 安德烈·塔可夫斯基</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/1318447.jpg" alt="巅峰猎杀" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">巅峰猎杀</div>
-          <div class="year">2026</div>
-          <div class="meta"><span class="score-badge">6.9</span><span>动作 · 巴塔萨·科马库</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/1339713.jpg" alt="痴迷" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">痴迷</div>
-          <div class="year">2026</div>
-          <div class="meta"><span class="score-badge">8.2</span><span>恐怖 · Curry Barker</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/21484.jpg" alt="着魔" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">着魔</div>
-          <div class="year">1981</div>
-          <div class="meta"><span class="score-badge">7.3</span><span>恐怖 · 安德列·祖拉维斯基</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/1363387.jpg" alt="糖精" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">糖精</div>
-          <div class="year">2026</div>
-          <div class="meta"><span class="score-badge">6.6</span><span>恐怖 · Natalie Erika James</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/73.jpg" alt="美国X档案" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">美国X档案</div>
-          <div class="year">1998</div>
-          <div class="meta"><span class="score-badge">8.3</span><span>剧情 · 托尼·凯耶</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/4858.jpg" alt="致命拜访" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">致命拜访</div>
-          <div class="year">2007</div>
-          <div class="meta"><span class="score-badge">6.1</span><span>恐怖 · 奥利弗·希施比格尔</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/593643.jpg" alt="菜单" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">菜单</div>
-          <div class="year">2022</div>
-          <div class="meta"><span class="score-badge">7.2</span><span>喜剧 · 马克·迈洛德</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/969681.jpg" alt="蜘蛛侠：崭新之日" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">蜘蛛侠：崭新之日</div>
-          <div class="year">2026</div>
-          <div class="meta"><span class="score-badge">7.6</span><span>科幻 · 德斯汀·丹尼尔·克雷顿</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/634649.jpg" alt="Spider-Man: No Way Home" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">Spider-Man: No Way Home</div>
-          <div class="year">2021</div>
-          <div class="meta"><span class="score-badge">7.9</span><span>Action · Jon Watts</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/102382.jpg" alt="超凡蜘蛛侠2" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">超凡蜘蛛侠2</div>
-          <div class="year">2014</div>
-          <div class="meta"><span class="score-badge">6.5</span><span>动作 · 马克·韦伯</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/947.jpg" alt="阿拉伯的劳伦斯" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">阿拉伯的劳伦斯</div>
-          <div class="year">1962</div>
-          <div class="meta"><span class="score-badge">8.0</span><span>冒险 · 大卫·里恩</span></div>
-        </div>
-      </article>
-
-      <article class="poster-card">
-        <img src="posters/986056.jpg" alt="雷霆特攻队" loading="lazy" decoding="async">
-        <div class="info">
-          <div class="title">雷霆特攻队</div>
-          <div class="year">2025</div>
-          <div class="meta"><span class="score-badge">7.3</span><span>动作 · 杰克·施莱尔</span></div>
-        </div>
-      </article>
-
+    <!-- 空状态 -->
+    <div class="empty-state container" data-empty hidden>
+      <div class="empty-icon">🎬</div>
+      <div class="empty-title" data-empty-title>暂无匹配的电影</div>
+      <div class="empty-hint" data-empty-hint>换个筛选条件试试</div>
     </div>
+
+    <!-- 无 JS 兜底：静态海报列表（保 SEO / 可爬取） -->
+    <noscript>
+      <section class="poster-grid">
+        <figure class="ns-card"><img src="posters/62.jpg" alt="2001太空漫游"><figcaption>2001太空漫游<span class="ns-year">1968</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/11645.jpg" alt="乱"><figcaption>乱<span class="ns-year">1985</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/13510.jpg" alt="伊甸湖"><figcaption>伊甸湖<span class="ns-year">2008</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/299536.jpg" alt="复仇者联盟3：无限战争"><figcaption>复仇者联盟3：无限战争<span class="ns-year">2018</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/299534.jpg" alt="复仇者联盟4：终局之战"><figcaption>复仇者联盟4：终局之战<span class="ns-year">2019</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/1368337.jpg" alt="奥德赛"><figcaption>奥德赛<span class="ns-year">2026</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/504.jpg" alt="女魔头"><figcaption>女魔头<span class="ns-year">2003</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/895.jpg" alt="安德烈·卢布廖夫"><figcaption>安德烈·卢布廖夫<span class="ns-year">1966</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/1318447.jpg" alt="巅峰猎杀"><figcaption>巅峰猎杀<span class="ns-year">2026</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/1339713.jpg" alt="痴迷"><figcaption>痴迷<span class="ns-year">2026</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/21484.jpg" alt="着魔"><figcaption>着魔<span class="ns-year">1981</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/1363387.jpg" alt="糖精"><figcaption>糖精<span class="ns-year">2026</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/73.jpg" alt="美国X档案"><figcaption>美国X档案<span class="ns-year">1998</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/4858.jpg" alt="致命拜访"><figcaption>致命拜访<span class="ns-year">2007</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/593643.jpg" alt="菜单"><figcaption>菜单<span class="ns-year">2022</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/969681.jpg" alt="蜘蛛侠：崭新之日"><figcaption>蜘蛛侠：崭新之日<span class="ns-year">2026</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/634649.jpg" alt="蜘蛛侠：英雄无归"><figcaption>蜘蛛侠：英雄无归<span class="ns-year">2021</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/102382.jpg" alt="超凡蜘蛛侠2"><figcaption>超凡蜘蛛侠2<span class="ns-year">2014</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/947.jpg" alt="阿拉伯的劳伦斯"><figcaption>阿拉伯的劳伦斯<span class="ns-year">1962</span></figcaption></figure>
+        <figure class="ns-card"><img src="posters/986056.jpg" alt="雷霆特攻队"><figcaption>雷霆特攻队<span class="ns-year">2025</span></figcaption></figure>
+      </section>
+    </noscript>
   </main>
 
   <footer class="site-footer">
     <p>© 2026 Jeremy · 海报与数据来自 TMDB</p>
   </footer>
 
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

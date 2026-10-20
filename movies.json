@@ -1,0 +1,411 @@
+[
+  {
+    "id": "62",
+    "type": "movie",
+    "title": "2001太空漫游",
+    "originalTitle": "2001: A Space Odyssey",
+    "year": 1968,
+    "genres": ["科幻", "悬疑", "冒险"],
+    "directors": ["斯坦利·库布里克"],
+    "status": "towatch",
+    "poster": "posters/62.jpg",
+    "backdrop": "stills/62.webp",
+    "ratings": {
+      "tmdb": { "score": 8.0, "votes": 12795 },
+      "imdb": { "score": 8.3, "votes": null },
+      "douban": { "score": 8.9, "votes": null }
+    },
+    "personal": { "rating": null, "comment": null },
+    "order": 1,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "11645",
+    "type": "movie",
+    "title": "乱",
+    "originalTitle": "乱",
+    "year": 1985,
+    "genres": ["动作", "剧情", "历史"],
+    "directors": ["黑泽明"],
+    "status": "towatch",
+    "poster": "posters/11645.jpg",
+    "backdrop": "stills/11645.webp",
+    "ratings": {
+      "tmdb": { "score": 8.0, "votes": 1871 },
+      "imdb": { "score": 8.2, "votes": null },
+      "douban": { "score": 8.9, "votes": null }
+    },
+    "personal": { "rating": null, "comment": null },
+    "order": 2,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "13510",
+    "type": "movie",
+    "title": "伊甸湖",
+    "originalTitle": "Eden Lake",
+    "year": 2008,
+    "genres": ["恐怖", "惊悚"],
+    "directors": ["詹姆斯·沃特金斯"],
+    "status": "watched",
+    "poster": "posters/13510.jpg",
+    "backdrop": "stills/13510.webp",
+    "ratings": {
+      "tmdb": { "score": 6.8, "votes": 2133 },
+      "imdb": { "score": 6.7, "votes": null },
+      "douban": { "score": 7.7, "votes": null }
+    },
+    "boxOffice": { "amount": "约400万美元", "note": "全球" },
+    "personal": { "rating": 4, "comment": null },
+    "order": 3,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "299536",
+    "type": "movie",
+    "title": "复仇者联盟3：无限战争",
+    "originalTitle": "Avengers: Infinity War",
+    "year": 2018,
+    "genres": ["冒险", "动作", "科幻"],
+    "directors": ["乔·罗素"],
+    "status": "watched",
+    "poster": "posters/299536.jpg",
+    "backdrop": "stills/299536.webp",
+    "ratings": {
+      "tmdb": { "score": 8.2, "votes": 32450 },
+      "imdb": { "score": 8.4, "votes": null },
+      "douban": { "score": 8.1, "votes": null }
+    },
+    "boxOffice": { "amount": "20.5亿美元", "note": "全球" },
+    "personal": { "rating": 4, "comment": null },
+    "order": 4,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "299534",
+    "type": "movie",
+    "title": "复仇者联盟4：终局之战",
+    "originalTitle": "Avengers: Endgame",
+    "year": 2019,
+    "genres": ["冒险", "科幻", "动作"],
+    "directors": ["安东尼·罗素"],
+    "status": "watched",
+    "poster": "posters/299534.jpg",
+    "backdrop": "stills/299534.webp",
+    "ratings": {
+      "tmdb": { "score": 8.2, "votes": 28180 },
+      "imdb": { "score": 8.4, "votes": null },
+      "douban": { "score": 8.5, "votes": null }
+    },
+    "boxOffice": { "amount": "28亿美元", "note": "全球" },
+    "personal": { "rating": 4, "comment": null },
+    "order": 5,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "1368337",
+    "type": "movie",
+    "title": "奥德赛",
+    "originalTitle": "The Odyssey",
+    "year": 2026,
+    "genres": ["冒险", "动作", "奇幻"],
+    "directors": ["克里斯托弗·诺兰"],
+    "status": "watched",
+    "poster": "posters/1368337.jpg",
+    "backdrop": "stills/1368337.webp",
+    "ratings": {
+      "tmdb": { "score": 8.0, "votes": 1721 },
+      "imdb": { "score": 8.5, "votes": null },
+      "douban": { "score": 8.6, "votes": null }
+    },
+    "boxOffice": { "amount": "约17.7亿美元", "note": "全球（映中）" },
+    "personal": { "rating": 5, "comment": null },
+    "order": 6,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "504",
+    "type": "movie",
+    "title": "女魔头",
+    "originalTitle": "Monster",
+    "year": 2003,
+    "genres": ["犯罪", "剧情"],
+    "directors": ["派蒂·杰金斯"],
+    "status": "watched",
+    "poster": "posters/504.jpg",
+    "backdrop": "stills/504.webp",
+    "ratings": {
+      "tmdb": { "score": 7.2, "votes": 2607 },
+      "imdb": { "score": 7.3, "votes": null },
+      "douban": { "score": 7.7, "votes": null }
+    },
+    "personal": { "rating": null, "comment": null },
+    "order": 7,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "895",
+    "type": "movie",
+    "title": "安德烈·卢布廖夫",
+    "originalTitle": "Андрей Рублёв",
+    "year": 1966,
+    "genres": ["剧情", "历史"],
+    "directors": ["安德烈·塔可夫斯基"],
+    "status": "towatch",
+    "poster": "posters/895.jpg",
+    "backdrop": "stills/895.webp",
+    "ratings": {
+      "tmdb": { "score": 7.9, "votes": 962 },
+      "imdb": { "score": 8.0, "votes": null },
+      "douban": { "score": 8.9, "votes": null }
+    },
+    "personal": { "rating": null, "comment": null },
+    "order": 8,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "1318447",
+    "type": "movie",
+    "title": "巅峰猎杀",
+    "originalTitle": "Apex",
+    "year": 2026,
+    "genres": ["动作", "惊悚"],
+    "directors": ["巴塔萨·科马库"],
+    "status": "watched",
+    "poster": "posters/1318447.jpg",
+    "backdrop": "stills/1318447.webp",
+    "ratings": {
+      "tmdb": { "score": 6.9, "votes": 1855 },
+      "imdb": { "score": 6.2, "votes": null },
+      "douban": { "score": 6.3, "votes": null }
+    },
+    "personal": { "rating": 3, "comment": null },
+    "order": 9,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "1339713",
+    "type": "movie",
+    "title": "痴迷",
+    "originalTitle": "Obsession",
+    "year": 2026,
+    "genres": ["恐怖", "惊悚"],
+    "directors": ["Curry Barker"],
+    "status": "watched",
+    "poster": "posters/1339713.jpg",
+    "backdrop": "stills/1339713.webp",
+    "ratings": {
+      "tmdb": { "score": 8.2, "votes": 3862 },
+      "imdb": { "score": 8.1, "votes": null },
+      "douban": { "score": 7.6, "votes": null }
+    },
+    "boxOffice": { "amount": "5.2亿美元", "note": "全球" },
+    "personal": { "rating": 4, "comment": null },
+    "order": 10,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "21484",
+    "type": "movie",
+    "title": "着魔",
+    "originalTitle": "Possession",
+    "year": 1981,
+    "genres": ["恐怖"],
+    "directors": ["安德列·祖拉维斯基"],
+    "status": "watched",
+    "poster": "posters/21484.jpg",
+    "backdrop": "stills/21484.webp",
+    "ratings": {
+      "tmdb": { "score": 7.3, "votes": 1404 },
+      "imdb": { "score": 7.3, "votes": null },
+      "douban": { "score": 8.0, "votes": null }
+    },
+    "personal": { "rating": 5, "comment": null },
+    "order": 11,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "1363387",
+    "type": "movie",
+    "title": "糖精",
+    "originalTitle": "Saccharine",
+    "year": 2026,
+    "genres": ["恐怖"],
+    "directors": ["Natalie Erika James"],
+    "status": "watched",
+    "poster": "posters/1363387.jpg",
+    "backdrop": "stills/1363387.webp",
+    "ratings": {
+      "tmdb": { "score": 6.6, "votes": 78 },
+      "imdb": { "score": 5.9, "votes": null }
+    },
+    "personal": { "rating": 3, "comment": null },
+    "order": 12,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "73",
+    "type": "movie",
+    "title": "美国X档案",
+    "originalTitle": "American History X",
+    "year": 1998,
+    "genres": ["剧情"],
+    "directors": ["托尼·凯耶"],
+    "status": "watched",
+    "poster": "posters/73.jpg",
+    "backdrop": "stills/73.webp",
+    "ratings": {
+      "tmdb": { "score": 8.3, "votes": 12827 },
+      "imdb": { "score": 8.5, "votes": null },
+      "douban": { "score": 8.4, "votes": null }
+    },
+    "personal": { "rating": 5, "comment": null },
+    "order": 13,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "4858",
+    "type": "movie",
+    "title": "致命拜访",
+    "originalTitle": "The Invasion",
+    "year": 2007,
+    "genres": ["恐怖", "悬疑", "科幻", "惊悚"],
+    "directors": ["奥利弗·希施比格尔"],
+    "status": "watched",
+    "poster": "posters/4858.jpg",
+    "backdrop": "stills/4858.webp",
+    "ratings": {
+      "tmdb": { "score": 6.1, "votes": 1793 },
+      "imdb": { "score": 5.9, "votes": null },
+      "douban": { "score": 6.6, "votes": null }
+    },
+    "personal": { "rating": 3, "comment": null },
+    "order": 14,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "593643",
+    "type": "movie",
+    "title": "菜单",
+    "originalTitle": "The Menu",
+    "year": 2022,
+    "genres": ["喜剧", "恐怖"],
+    "directors": ["马克·迈洛德"],
+    "status": "watched",
+    "poster": "posters/593643.jpg",
+    "backdrop": "stills/593643.webp",
+    "ratings": {
+      "tmdb": { "score": 7.2, "votes": 6565 },
+      "imdb": { "score": 7.2, "votes": null },
+      "douban": { "score": 6.4, "votes": null }
+    },
+    "boxOffice": { "amount": "7900万美元", "note": "全球" },
+    "personal": { "rating": 2, "comment": null },
+    "order": 15,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "969681",
+    "type": "movie",
+    "title": "蜘蛛侠：崭新之日",
+    "originalTitle": "Spider-Man: Brand New Day",
+    "year": 2026,
+    "genres": ["科幻", "动作", "冒险"],
+    "directors": ["德斯汀·丹尼尔·克雷顿"],
+    "status": "watched",
+    "poster": "posters/969681.jpg",
+    "backdrop": "stills/969681.webp",
+    "ratings": {
+      "tmdb": { "score": 7.6, "votes": 40 },
+      "imdb": { "score": 8.2, "votes": null },
+      "douban": { "score": 7.8, "votes": null }
+    },
+    "boxOffice": { "amount": "约25亿美元", "note": "全球（映中）" },
+    "personal": { "rating": 4, "comment": null },
+    "order": 16,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "634649",
+    "type": "movie",
+    "title": "蜘蛛侠：英雄无归",
+    "originalTitle": "Spider-Man: No Way Home",
+    "year": 2021,
+    "genres": ["动作", "冒险", "科幻"],
+    "directors": ["Jon Watts"],
+    "status": "watched",
+    "poster": "posters/634649.jpg",
+    "backdrop": "stills/634649.webp",
+    "ratings": {
+      "tmdb": { "score": 7.9, "votes": 22349 },
+      "imdb": { "score": 8.1, "votes": null },
+      "douban": { "score": 6.6, "votes": null }
+    },
+    "boxOffice": { "amount": "19.2亿美元", "note": "全球" },
+    "personal": { "rating": 3, "comment": null },
+    "order": 17,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "102382",
+    "type": "movie",
+    "title": "超凡蜘蛛侠2",
+    "originalTitle": "The Amazing Spider-Man 2",
+    "year": 2014,
+    "genres": ["动作", "冒险", "科幻"],
+    "directors": ["马克·韦伯"],
+    "status": "watched",
+    "poster": "posters/102382.jpg",
+    "backdrop": "stills/102382.webp",
+    "ratings": {
+      "tmdb": { "score": 6.5, "votes": 14420 },
+      "imdb": { "score": 6.6, "votes": null },
+      "douban": { "score": 7.8, "votes": null }
+    },
+    "boxOffice": { "amount": "7.1亿美元", "note": "全球" },
+    "personal": { "rating": 5, "comment": null },
+    "order": 18,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "947",
+    "type": "movie",
+    "title": "阿拉伯的劳伦斯",
+    "originalTitle": "Lawrence of Arabia",
+    "year": 1962,
+    "genres": ["冒险", "历史", "战争"],
+    "directors": ["大卫·里恩"],
+    "status": "towatch",
+    "poster": "posters/947.jpg",
+    "backdrop": "stills/947.webp",
+    "ratings": {
+      "tmdb": { "score": 8.0, "votes": 3511 },
+      "imdb": { "score": 8.3, "votes": null },
+      "douban": { "score": 8.7, "votes": null }
+    },
+    "personal": { "rating": null, "comment": null },
+    "order": 19,
+    "updatedAt": "2026-10-20"
+  },
+  {
+    "id": "986056",
+    "type": "movie",
+    "title": "雷霆特攻队",
+    "originalTitle": "Thunderbolts*",
+    "year": 2025,
+    "genres": ["动作", "科幻", "冒险"],
+    "directors": ["杰克·施莱尔"],
+    "status": "watched",
+    "poster": "posters/986056.jpg",
+    "backdrop": "stills/986056.webp",
+    "ratings": {
+      "tmdb": { "score": 7.3, "votes": 3753 },
+      "imdb": { "score": 7.1, "votes": null },
+      "douban": { "score": 6.8, "votes": null }
+    },
+    "boxOffice": { "amount": "3.8亿美元", "note": "全球" },
+    "personal": { "rating": 4, "comment": null },
+    "order": 20,
+    "updatedAt": "2026-10-20"
+  }
+]
