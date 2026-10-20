@@ -9,4 +9,5 @@ scripts/writeback_data.json
 scripts/fetch_tmdb_people.js
 scripts/merge_people.js
 scripts/split_people.js
+scripts/download_people_photos.js
 cast_photos.json
