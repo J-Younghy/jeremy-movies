@@ -79,6 +79,7 @@
   var previewText = previewOverview ? previewOverview.querySelector('.preview-overview__text') : null;
   var previewRatings = previewOverview ? previewOverview.querySelector('.preview-overview__ratings') : null;
   var previewCast = previewOverview ? previewOverview.querySelector('.preview-overview__cast') : null;
+  var previewComment = previewOverview ? previewOverview.querySelector('.preview-overview__comment') : null;
 
   // 详情页
   var detail = document.querySelector('[data-detail]');
@@ -588,6 +589,8 @@
       if (rt) chips.push(esc(rt));
       if (movie.status === 'watched') chips.push('\u5df2\u770b');
       else if (movie.status === 'towatch') chips.push('\u5f85\u770b');
+      // 观影日期（personal.watchedDate，有则显示）
+      if (personal.watchedDate) chips.push('\u770b\u4e8e ' + esc(String(personal.watchedDate)));
       if (chips.length) {
         chips.forEach(function (c) {
           var li = document.createElement('li');
@@ -604,6 +607,13 @@
     if (previewText) {
       previewText.textContent = movie.overview || '';
       previewText.style.display = movie.overview ? '' : 'none';
+    }
+
+    // 个人短评（personal.comment，有则显示；无则隐藏整块）
+    if (previewComment) {
+      var cmt = (personal && personal.comment) || '';
+      previewComment.textContent = cmt ? '\u201c' + cmt + '\u201d' : '';
+      previewComment.style.display = cmt ? '' : 'none';
     }
 
     // 评分行：IMDB / 豆瓣 / TMDB（有则显示）+ 个人星级
@@ -676,7 +686,8 @@
     }
 
     populatePreview(movie);
-    if (previewOverview) previewOverview.classList.add('is-on');
+    // 文字面板不在此处立即 is-on，改在背景剧照就绪后一起浮现（见下方 loadBackdrop 回调），
+    // 避免"文字先于虚化背景出现、短暂重叠在海报上"的问题。
 
     // 双 rAF：第一帧让浏览器提交过渡起点（样式计算），第二帧改终点才会产生 transition
     requestAnimationFrame(function () {
@@ -692,10 +703,17 @@
       if (!previewActive || previewMovie !== movie) return;
       if (previewBgImg && ok) {
         previewBgImg.src = bgSrc;
-        if (previewBg) previewBg.classList.add('is-on');
-      } else if (previewBg) {
-        // 剧照加载失败：仍开启背景层（显示占位底色），避免梗概无背景
+      }
+      if (previewBg) {
         previewBg.classList.add('is-on');
+      }
+      // 背景就绪后，文字面板才浮现（羊皮纸式淡入），保证永远晚于背景出现
+      if (previewOverview) {
+        previewOverview.classList.add('is-on');
+        // 触发文字逐层浮现动画（哈利波特羊皮纸浮现感）
+        previewOverview.classList.remove('is-reveal');
+        void previewOverview.offsetWidth;
+        previewOverview.classList.add('is-reveal');
       }
     });
   }
@@ -716,7 +734,10 @@
     if (previewCard) {
       previewCard.classList.remove('is-on');
     }
-    if (previewOverview) previewOverview.classList.remove('is-on');
+    if (previewOverview) {
+      previewOverview.classList.remove('is-on');
+      previewOverview.classList.remove('is-reveal');
+    }
   }
 
   /* ======================================================================

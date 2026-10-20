@@ -629,6 +629,36 @@ main,
 }
 .preview-overview.is-on { opacity: 1; }
 
+/* 羊皮纸浮现动画：文字晚于虚化背景出现，逐层淡入上浮 + 暖色光晕，如哈利波特字体浮现于羊皮纸上 */
+.preview-overview.is-reveal > * {
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(2px);
+  animation: parchment-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+.preview-overview.is-reveal > *:nth-child(1) { animation-delay: 0.00s; }
+.preview-overview.is-reveal > *:nth-child(2) { animation-delay: 0.06s; }
+.preview-overview.is-reveal > *:nth-child(3) { animation-delay: 0.12s; }
+.preview-overview.is-reveal > *:nth-child(4) { animation-delay: 0.18s; }
+.preview-overview.is-reveal > *:nth-child(5) { animation-delay: 0.24s; }
+.preview-overview.is-reveal > *:nth-child(6) { animation-delay: 0.30s; }
+.preview-overview.is-reveal > *:nth-child(7) { animation-delay: 0.36s; }
+
+@keyframes parchment-rise {
+  0%   { opacity: 0; transform: translateY(10px); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+}
+
+/* 尊重「减少动态效果」偏好：退化为一键淡入 */
+@media (prefers-reduced-motion: reduce) {
+  .preview-overview.is-reveal > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
 .preview-overview__head {
   display: flex;
   align-items: baseline;
@@ -696,25 +726,47 @@ main,
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.34);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  letter-spacing: 0.01em;
 }
 
-.preview-rating__label { font-weight: 500; opacity: 0.8; }
+.preview-rating__label { font-weight: 600; opacity: 0.92; }
 
-.preview-rating__value { font-size: 17px; font-variant-numeric: tabular-nums; }
+.preview-rating__value { font-size: 16px; font-variant-numeric: tabular-nums; }
 
-.preview-rating--imdb   .preview-rating__value { color: #f5c518; }
-.preview-rating--douban .preview-rating__value { color: #35d052; }
-.preview-rating--tmdb   .preview-rating__value { color: #4dd5ff; }
-.preview-rating--star   { color: #ffb340; }
+/* 各平台实色徽章 */
+.preview-rating--imdb   { background: linear-gradient(135deg, #f5c518, #e8b20e); color: #000; text-shadow: none; }
+.preview-rating--imdb   .preview-rating__label { color: rgba(0,0,0,0.62); }
+.preview-rating--douban { background: linear-gradient(135deg, #00b51d, #0a8f1c); }
+.preview-rating--tmdb   { background: linear-gradient(135deg, #01b4e4, #0288b8); }
+.preview-rating--star   { background: linear-gradient(135deg, #ffb340, #ff8f00); }
 
-.preview-rating__star { color: #ffb340; font-size: 16px; letter-spacing: 1px; }
+.preview-rating--imdb   .preview-rating__value { color: #000; }
+.preview-rating--douban .preview-rating__value { color: #fff; }
+.preview-rating--tmdb   .preview-rating__value { color: #fff; }
+.preview-rating--star   .preview-rating__value { color: #fff; }
+
+.preview-rating__star { font-size: 16px; letter-spacing: 1px; }
+
+/* 个人短评：暖色引用，仿佛从画面里浮现的心声 */
+.preview-overview__comment {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  font-style: italic;
+  color: rgba(255, 244, 224, 0.96);
+  background: linear-gradient(135deg, rgba(255, 176, 64, 0.16), rgba(255, 143, 0, 0.08));
+  border-left: 3px solid rgba(255, 176, 64, 0.75);
+  border-radius: 0 10px 10px 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
 
 .preview-overview__cast {
   display: flex;
