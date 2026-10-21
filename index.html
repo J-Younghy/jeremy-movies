@@ -214,6 +214,22 @@
     </div>
   </div>
 
+  <!-- 预告片浮窗（详情页关闭时承载 iframe 继续播放） -->
+  <div class="trailer-pop" data-trailer-pop aria-hidden="true" hidden>
+    <div class="trailer-pop__head">
+      <span class="trailer-pop__title"></span>
+      <button class="trailer-pop__close" data-trailer-pop-close type="button" aria-label="关闭浮窗">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="trailer-pop__stage" data-trailer-pop-stage></div>
+  </div>
+  <!-- 手机端折叠标签（箭头） -->
+  <button class="trailer-tab" data-trailer-tab type="button" aria-label="展开预告片浮窗" hidden>
+    <svg class="trailer-tab__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    <span class="trailer-tab__dot" aria-hidden="true"></span>
+  </button>
+
   <!-- 火后余温光晕 + 拟火元素 -->
   <div class="detail__glow" data-detail-glow aria-hidden="true"></div>
   <div class="fire" data-fire aria-hidden="true"></div>

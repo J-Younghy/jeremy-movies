@@ -1455,3 +1455,141 @@ body.is-detail-open .detail__glow { opacity: 1; }
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==========================================================================
+   预告片浮窗（详情页关闭后继续播放）
+   电脑端：右下角标准浮窗（16:9 卡片 + 标题条）
+   手机端：折叠到屏幕右缘，露出箭头标签；点击展开为浮窗
+   ========================================================================== */
+.trailer-pop {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 80;
+  width: 360px;
+  border-radius: 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-pop);
+  overflow: hidden;
+  animation: trailer-pop-in 0.32s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+}
+@keyframes trailer-pop-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.trailer-pop__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.trailer-pop__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.trailer-pop__close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.trailer-pop__close:hover { background: var(--bg-sunken); color: var(--text-primary); }
+.trailer-pop__close svg { width: 16px; height: 16px; }
+
+.trailer-pop__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.trailer-pop__stage iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* 手机端：折叠到屏幕右缘，只露箭头标签 */
+.trailer-pop.is-collapsed {
+  right: -340px;          /* 只留 20px 边缘 */
+  animation: none;
+  transition: right 0.34s var(--ease-out);
+}
+.trailer-pop.is-collapsed .trailer-pop__head { display: none; }
+
+/* 折叠标签（箭头） */
+.trailer-tab {
+  position: fixed;
+  right: 0;
+  bottom: 120px;
+  z-index: 81;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border: none;
+  border-radius: 12px 0 0 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-right: none;
+  box-shadow: var(--shadow-pop);
+  color: var(--text-primary);
+  cursor: pointer;
+  animation: trailer-tab-in 0.3s var(--ease-out);
+}
+@keyframes trailer-tab-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.trailer-tab__icon {
+  width: 18px;
+  height: 18px;
+}
+.trailer-tab__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: trailer-tab-pulse 1.6s ease-in-out infinite;
+}
+@keyframes trailer-tab-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* 电脑端不显示折叠标签 */
+@media (pointer: fine) {
+  .trailer-tab { display: none; }
+}
+
+/* 手机端：浮窗更窄、贴合屏幕，折叠推出量适配 */
+@media (pointer: coarse), (max-width: 640px) {
+  .trailer-pop {
+    width: 300px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .trailer-pop.is-collapsed {
+    right: -284px; /* 露出 16px 边缘 */
+  }
+  .trailer-tab { bottom: 96px; }
+}

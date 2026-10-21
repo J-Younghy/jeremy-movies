@@ -37,6 +37,7 @@
   // 详情页状态
   var detailOpen = false;
   var currentMovieId = null;
+  var currentMovieTitle = null;
   var didPush = false;
   var lastTriggerCard = null;
   var lastFocused = null;
@@ -106,6 +107,15 @@
   var trailerPlaceholder = detail ? detail.querySelector('[data-trailer-placeholder]') : null;
   var trailerPlayer = detail ? detail.querySelector('[data-trailer-player]') : null;
   var currentTrailerId = null;
+
+  // 预告片浮窗（详情页关闭后承载 iframe）
+  var trailerPop = document.querySelector('[data-trailer-pop]');
+  var trailerPopTitle = trailerPop ? trailerPop.querySelector('.trailer-pop__title') : null;
+  var trailerPopStage = trailerPop ? trailerPop.querySelector('[data-trailer-pop-stage]') : null;
+  var trailerPopClose = trailerPop ? trailerPop.querySelector('[data-trailer-pop-close]') : null;
+  var trailerTab = document.querySelector('[data-trailer-tab]');
+  var trailerPopActive = false;   // 浮窗是否在播（有 iframe）
+  var trailerPopCollapsed = false; // 手机端是否折叠
 
   var fireEl = document.querySelector('[data-fire]');
   var glow = document.querySelector('[data-detail-glow]');
@@ -952,6 +962,10 @@
     if (detailOpen) return;
     detailOpen = true;
     currentMovieId = String(movie.id);
+    currentMovieTitle = movie.title || '';
+
+    // 打开详情页时，若浮窗仍在播，先关闭它（避免双声源）
+    if (trailerPopActive) closeTrailerPop();
 
     hidePreview();
 
@@ -999,6 +1013,10 @@
   function runClose() {
     if (!detailOpen) return;
     detailOpen = false;
+
+    // 捕获关闭时的片名（供异步浮窗搬运用，避免与后续打开冲突）
+    var closingTitle = currentMovieTitle || '';
+
     currentMovieId = null;
     didPush = false;
 
@@ -1015,6 +1033,12 @@
     clearTimeout(closeTimer);
     closeTimer = setTimeout(function () {
       body.classList.remove('is-detail-closing');
+
+      // 预告片浮窗：详情页完全关闭后，把正在播放的 iframe 搬运到浮窗继续播
+      if (trailerPlayer && trailerPlayer.firstElementChild) {
+        transferTrailerToPop(closingTitle);
+      }
+
       if (detail) detail.hidden = true;
       if (fireEl) fireEl.style.display = 'none';
       document.documentElement.style.overflow = ''; // 恢复滚动
@@ -1024,6 +1048,61 @@
       }
       lastTriggerCard = null;
     }, CLOSE_MS);
+  }
+
+  /* ======================================================================
+     11b. 预告片浮窗（详情页关闭后继续播放）
+     电脑端：右下角标准浮窗；手机端：折叠标签 → 点击展开浮窗
+     ====================================================================== */
+  function transferTrailerToPop(title) {
+    if (!trailerPop || !trailerPopStage || !trailerPlayer) return;
+    var iframe = trailerPlayer.firstElementChild;
+    if (!iframe) return;
+
+    // 把 iframe 搬运到浮窗 stage（DOM 移动，播放不中断）
+    trailerPopStage.innerHTML = '';
+    trailerPopStage.appendChild(iframe);
+    if (trailerPopTitle) trailerPopTitle.textContent = title || '';
+
+    trailerPop.hidden = false;
+    trailerPop.setAttribute('aria-hidden', 'false');
+    trailerPopActive = true;
+
+    // 手机端：返回海报墙时折叠到屏幕边缘，露出箭头标签
+    if (touchMode) {
+      collapseTrailerPop();
+    } else {
+      expandTrailerPop();
+    }
+  }
+
+  function expandTrailerPop() {
+    if (!trailerPop) return;
+    trailerPopCollapsed = false;
+    trailerPop.classList.remove('is-collapsed');
+    if (trailerTab) trailerTab.hidden = true;
+  }
+
+  function collapseTrailerPop() {
+    if (!trailerPop) return;
+    trailerPopCollapsed = true;
+    trailerPop.classList.add('is-collapsed');
+    if (trailerTab) {
+      trailerTab.hidden = false;
+      trailerTab.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function closeTrailerPop() {
+    if (!trailerPop) return;
+    // 销毁 iframe，彻底停播
+    if (trailerPopStage) trailerPopStage.innerHTML = '';
+    trailerPop.hidden = true;
+    trailerPop.setAttribute('aria-hidden', 'true');
+    trailerPopActive = false;
+    trailerPopCollapsed = false;
+    trailerPop.classList.remove('is-collapsed');
+    if (trailerTab) trailerTab.hidden = true;
   }
 
   function requestClose() {
@@ -1084,6 +1163,18 @@
           iframe.loading = 'lazy';
           trailerPlayer.appendChild(iframe);
         }
+      });
+    }
+
+    // 浮窗关闭按钮
+    if (trailerPopClose) {
+      trailerPopClose.addEventListener('click', closeTrailerPop);
+    }
+
+    // 手机端折叠标签：点击展开浮窗
+    if (trailerTab) {
+      trailerTab.addEventListener('click', function () {
+        expandTrailerPop();
       });
     }
 
