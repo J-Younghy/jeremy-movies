@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jeremy都做了什么 — Jeremy's</title>
-  <meta name="description" content="Jeremy 的其他兴趣板块：游戏、书籍、动画等。">
+  <title>这是什么 — Jeremy's</title>
+  <meta name="description" content="这个板块还在装修中，敬请期待。">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://jeremy-movies.com/everything/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Jeremy's">
-  <meta property="og:title" content="Jeremy都做了什么">
+  <meta property="og:title" content="这是什么">
   <meta property="og:url" content="https://jeremy-movies.com/everything/">
   <meta property="og:locale" content="zh_CN">
   <script>
@@ -23,13 +23,116 @@
     })();
   </script>
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <style>
+    /* —— 装修中页面 —— */
+    .reno {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 48px 20px;
+    }
+    .reno-scene {
+      position: relative;
+      width: min(320px, 78vw);
+      height: 240px;
+      margin-bottom: 28px;
+    }
+    .reno-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+      letter-spacing: 0.04em;
+    }
+    .reno-sub {
+      font-size: 1rem;
+      opacity: 0.62;
+      margin: 0;
+    }
+
+    /* 小男孩跑步：原地奔跑，身体上下弹跳 + 手臂腿摆动 */
+    .runner {
+      position: absolute;
+      left: 50%;
+      bottom: 56px;
+      transform: translateX(-50%);
+      animation: runner-bob 0.5s ease-in-out infinite;
+    }
+    @keyframes runner-bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-9px); }
+    }
+
+    /* 手臂：交替前后摆 */
+    .arm-back { transform-origin: 12px 8px; animation: swing-back 0.5s ease-in-out infinite; }
+    .arm-front { transform-origin: 12px 8px; animation: swing-front 0.5s ease-in-out infinite; }
+    @keyframes swing-back {
+      0%, 100% { transform: rotate(24deg); }
+      50%      { transform: rotate(-24deg); }
+    }
+    @keyframes swing-front {
+      0%, 100% { transform: rotate(-24deg); }
+      50%      { transform: rotate(24deg); }
+    }
+
+    /* 腿：交替迈步 */
+    .leg-back { transform-origin: 12px 4px; animation: step-back 0.5s ease-in-out infinite; }
+    .leg-front { transform-origin: 12px 4px; animation: step-front 0.5s ease-in-out infinite; }
+    @keyframes step-back {
+      0%, 100% { transform: rotate(-20deg); }
+      50%      { transform: rotate(20deg); }
+    }
+    @keyframes step-front {
+      0%, 100% { transform: rotate(20deg); }
+      50%      { transform: rotate(-20deg); }
+    }
+
+    /* 地面：向右滚动的横线，营造向前跑的感觉 */
+    .ground {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 48px;
+      height: 2px;
+      overflow: hidden;
+      opacity: 0.25;
+    }
+    .ground-dash {
+      display: block;
+      height: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        currentColor 0,
+        currentColor 22px,
+        transparent 22px,
+        transparent 44px
+      );
+      animation: ground-move 0.5s linear infinite;
+    }
+    @keyframes ground-move {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-44px); }
+    }
+
+    /* 主题适配：浅色用深色人物，深色用浅色人物（line 元素靠 stroke 上色） */
+    .runner-body   { fill: #e5484d; stroke: #e5484d; }
+    .runner-skin   { fill: #ffd7a8; }
+    .runner-pants  { fill: #3b6bd6; stroke: #3b6bd6; }
+    .runner-shoe   { fill: #2b2b33; stroke: #2b2b33; }
+    :root[data-theme="dark"] .runner-shoe { fill: #e8e8f0; stroke: #e8e8f0; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .runner-shoe { fill: #e8e8f0; stroke: #e8e8f0; }
+    }
+  </style>
 </head>
 <body>
   <header class="nav" data-nav>
     <a class="nav-logo" href="/">Jeremy's</a>
     <nav class="nav-links" aria-label="主导航">
       <a href="/" class="nav-link">电影</a>
-      <a href="/everything/" class="nav-link is-active" aria-current="page">Jeremy都做了什么</a>
+      <a href="/everything/" class="nav-link is-active" aria-current="page">这是什么</a>
       <a href="/about/" class="nav-link">关于</a>
     </nav>
     <button class="nav-theme" data-theme-toggle aria-label="切换主题" title="切换主题">🌙</button>
@@ -39,32 +142,41 @@
   </header>
 
   <main>
-    <section class="hero container">
-      <h1 class="hero-title">Jeremy都做了什么</h1>
-      <p class="hero-sub">电影之外，Jeremy 的其他兴趣与收藏</p>
-    </section>
+    <section class="reno">
+      <div class="reno-scene" aria-hidden="true">
+        <!-- 跑步的小男孩（原地奔跑动画） -->
+        <svg class="runner" width="96" height="120" viewBox="0 0 96 120" fill="none">
+          <!-- 头 -->
+          <circle class="runner-skin" cx="48" cy="20" r="15"></circle>
+          <!-- 头发 -->
+          <path class="runner-body" d="M33 16 a15 15 0 0 1 30 0 a16 16 0 0 0 -22 -4 a13 13 0 0 0 -8 4 z"></path>
+          <!-- 躯干 -->
+          <rect class="runner-body" x="42" y="34" width="12" height="34" rx="5"></rect>
+          <!-- 后臂 -->
+          <g class="arm-back">
+            <line class="runner-body" x1="42" y1="40" x2="26" y2="58" stroke-width="6" stroke-linecap="round"></line>
+          </g>
+          <!-- 前臂 -->
+          <g class="arm-front">
+            <line class="runner-body" x1="54" y1="40" x2="70" y2="58" stroke-width="6" stroke-linecap="round"></line>
+          </g>
+          <!-- 后腿 -->
+          <g class="leg-back">
+            <line class="runner-pants" x1="45" y1="66" x2="38" y2="92" stroke-width="8" stroke-linecap="round"></line>
+            <line class="runner-shoe" x1="38" y1="92" x2="30" y2="96" stroke-width="7" stroke-linecap="round"></line>
+          </g>
+          <!-- 前腿 -->
+          <g class="leg-front">
+            <line class="runner-pants" x1="51" y1="66" x2="58" y2="92" stroke-width="8" stroke-linecap="round"></line>
+            <line class="runner-shoe" x1="58" y1="92" x2="66" y2="96" stroke-width="7" stroke-linecap="round"></line>
+          </g>
+        </svg>
+        <!-- 地面 -->
+        <div class="ground"><span class="ground-dash"></span></div>
+      </div>
 
-    <section class="poster-grid container" style="grid-template-columns:repeat(3,1fr);">
-      <a class="board-card" href="/" style="text-decoration:none;">
-        <div class="board-icon">🎬</div>
-        <div class="board-title">电影</div>
-        <div class="board-badge">主板块</div>
-      </a>
-      <div class="board-card">
-        <div class="board-icon">🎮</div>
-        <div class="board-title">游戏</div>
-        <div class="board-badge">即将上线</div>
-      </div>
-      <div class="board-card">
-        <div class="board-icon">📚</div>
-        <div class="board-title">书籍</div>
-        <div class="board-badge">即将上线</div>
-      </div>
-      <div class="board-card">
-        <div class="board-icon">✨</div>
-        <div class="board-title">动画</div>
-        <div class="board-badge">即将上线</div>
-      </div>
+      <h1 class="reno-title">装修中</h1>
+      <p class="reno-sub">这个板块正在加紧施工，敬请期待</p>
     </section>
   </main>
 
