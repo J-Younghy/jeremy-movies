@@ -37,8 +37,8 @@
     .reno-scene {
       position: relative;
       width: min(320px, 78vw);
-      height: 240px;
-      margin-bottom: 28px;
+      height: 260px;
+      margin-bottom: 24px;
     }
     .reno-title {
       font-size: 1.9rem;
@@ -52,52 +52,52 @@
       margin: 0;
     }
 
-    /* 小男孩跑步：原地奔跑，身体上下弹跳 + 手臂腿摆动 */
+    /* —— Celeste 风格像素跑步动画 —— */
+    /* 像素锐利：放大后仍是清晰方块 */
+    .pixel-sprite {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
     .runner {
       position: absolute;
       left: 50%;
       bottom: 56px;
-      transform: translateX(-50%);
-      animation: runner-bob 0.5s ease-in-out infinite;
+      width: 120px;
+      height: 140px;
+      margin-left: -60px;
+      /* 身体整体上下弹跳，营造跑步节奏 */
+      animation: runner-bob 0.32s steps(2, end) infinite;
     }
     @keyframes runner-bob {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(-9px); }
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
     }
 
-    /* 手臂：交替前后摆 */
-    .arm-back { transform-origin: 12px 8px; animation: swing-back 0.5s ease-in-out infinite; }
-    .arm-front { transform-origin: 12px 8px; animation: swing-front 0.5s ease-in-out infinite; }
-    @keyframes swing-back {
-      0%, 100% { transform: rotate(24deg); }
-      50%      { transform: rotate(-24deg); }
+    /* 逐帧切换：4 帧循环，steps(1) 硬切不补间 → 真正的像素帧动画 */
+    .runner-frame {
+      position: absolute;
+      inset: 0;
+      animation: frame-cycle 0.32s steps(1, end) infinite;
     }
-    @keyframes swing-front {
-      0%, 100% { transform: rotate(-24deg); }
-      50%      { transform: rotate(24deg); }
-    }
-
-    /* 腿：交替迈步 */
-    .leg-back { transform-origin: 12px 4px; animation: step-back 0.5s ease-in-out infinite; }
-    .leg-front { transform-origin: 12px 4px; animation: step-front 0.5s ease-in-out infinite; }
-    @keyframes step-back {
-      0%, 100% { transform: rotate(-20deg); }
-      50%      { transform: rotate(20deg); }
-    }
-    @keyframes step-front {
-      0%, 100% { transform: rotate(20deg); }
-      50%      { transform: rotate(-20deg); }
+    .runner-frame:nth-child(2) { animation-delay: -0.08s; }
+    .runner-frame:nth-child(3) { animation-delay: -0.16s; }
+    .runner-frame:nth-child(4) { animation-delay: -0.24s; }
+    @keyframes frame-cycle {
+      0%   { opacity: 1; }
+      25%  { opacity: 0; }
+      100% { opacity: 0; }
     }
 
-    /* 地面：向右滚动的横线，营造向前跑的感觉 */
+    /* 地面：像素风格的方块跑道，向右滚动 */
     .ground {
       position: absolute;
       left: 0;
       right: 0;
       bottom: 48px;
-      height: 2px;
+      height: 6px;
       overflow: hidden;
-      opacity: 0.25;
+      opacity: 0.22;
     }
     .ground-dash {
       display: block;
@@ -105,26 +105,25 @@
       background: repeating-linear-gradient(
         90deg,
         currentColor 0,
-        currentColor 22px,
-        transparent 22px,
-        transparent 44px
+        currentColor 16px,
+        transparent 16px,
+        transparent 32px
       );
-      animation: ground-move 0.5s linear infinite;
+      animation: ground-move 0.32s steps(4, end) infinite;
     }
     @keyframes ground-move {
       from { transform: translateX(0); }
-      to   { transform: translateX(-44px); }
+      to   { transform: translateX(-32px); }
     }
 
-    /* 主题适配：浅色用深色人物，深色用浅色人物（line 元素靠 stroke 上色） */
-    .runner-body   { fill: #e5484d; stroke: #e5484d; }
-    .runner-skin   { fill: #ffd7a8; }
-    .runner-pants  { fill: #3b6bd6; stroke: #3b6bd6; }
-    .runner-shoe   { fill: #2b2b33; stroke: #2b2b33; }
-    :root[data-theme="dark"] .runner-shoe { fill: #e8e8f0; stroke: #e8e8f0; }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .runner-shoe { fill: #e8e8f0; stroke: #e8e8f0; }
-    }
+    /* Madeline 配色（Celeste 红发女孩） */
+    .p-hair    { fill: #c73e3a; }
+    .p-hair-hi { fill: #e85a4e; }
+    .p-skin    { fill: #ffd9ae; }
+    .p-jacket  { fill: #3b4f9b; }
+    .p-jacket2 { fill: #475bb0; }
+    .p-pants   { fill: #2c2c34; }
+    .p-shoe    { fill: #5a3b2a; }
   </style>
 </head>
 <body>
@@ -144,33 +143,73 @@
   <main>
     <section class="reno">
       <div class="reno-scene" aria-hidden="true">
-        <!-- 跑步的小男孩（原地奔跑动画） -->
-        <svg class="runner" width="96" height="120" viewBox="0 0 96 120" fill="none">
-          <!-- 头 -->
-          <circle class="runner-skin" cx="48" cy="20" r="15"></circle>
-          <!-- 头发 -->
-          <path class="runner-body" d="M33 16 a15 15 0 0 1 30 0 a16 16 0 0 0 -22 -4 a13 13 0 0 0 -8 4 z"></path>
-          <!-- 躯干 -->
-          <rect class="runner-body" x="42" y="34" width="12" height="34" rx="5"></rect>
-          <!-- 后臂 -->
-          <g class="arm-back">
-            <line class="runner-body" x1="42" y1="40" x2="26" y2="58" stroke-width="6" stroke-linecap="round"></line>
-          </g>
-          <!-- 前臂 -->
-          <g class="arm-front">
-            <line class="runner-body" x1="54" y1="40" x2="70" y2="58" stroke-width="6" stroke-linecap="round"></line>
-          </g>
-          <!-- 后腿 -->
-          <g class="leg-back">
-            <line class="runner-pants" x1="45" y1="66" x2="38" y2="92" stroke-width="8" stroke-linecap="round"></line>
-            <line class="runner-shoe" x1="38" y1="92" x2="30" y2="96" stroke-width="7" stroke-linecap="round"></line>
-          </g>
-          <!-- 前腿 -->
-          <g class="leg-front">
-            <line class="runner-pants" x1="51" y1="66" x2="58" y2="92" stroke-width="8" stroke-linecap="round"></line>
-            <line class="runner-shoe" x1="58" y1="92" x2="66" y2="96" stroke-width="7" stroke-linecap="round"></line>
-          </g>
-        </svg>
+        <!-- Celeste 风格像素红发女孩跑步：4 帧逐帧循环 -->
+        <div class="runner">
+          <!-- 帧 1：双臂摆动、左腿前右腿后 -->
+          <svg class="runner-frame pixel-sprite" viewBox="0 0 12 14" width="120" height="140" shape-rendering="crispEdges">
+            <g class="p-hair">
+              <rect x="4" y="0" width="2" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="6" y="0" width="1" height="1"/>
+              <rect x="3" y="1" width="6" height="1"/><rect x="9" y="1" width="2" height="1"/><rect x="9" y="2" width="1" height="1"/>
+              <rect x="3" y="2" width="1" height="1"/>
+            </g>
+            <g class="p-skin">
+              <rect x="4" y="2" width="4" height="2"/><rect x="5" y="4" width="3" height="1"/>
+            </g>
+            <g class="p-hair-hi"><rect x="4" y="1" width="2" height="1"/></g>
+            <g class="p-jacket">
+              <rect x="4" y="5" width="4" height="3"/><rect x="3" y="6" width="1" height="2"/><rect x="8" y="6" width="1" height="2"/>
+            </g>
+            <g class="p-jacket2"><rect x="5" y="5" width="2" height="1"/></g>
+            <g class="p-pants">
+              <rect x="4" y="8" width="2" height="3"/><rect x="6" y="8" width="2" height="3"/>
+            </g>
+            <g class="p-shoe">
+              <rect x="3" y="11" width="2" height="2"/><rect x="7" y="11" width="2" height="2"/>
+            </g>
+            <g class="p-skin"><rect x="2" y="6" width="1" height="2"/><rect x="9" y="6" width="1" height="2"/></g>
+          </svg>
+          <!-- 帧 2：双手收起、双腿并拢过中点 -->
+          <svg class="runner-frame pixel-sprite" viewBox="0 0 12 14" width="120" height="140" shape-rendering="crispEdges">
+            <g class="p-hair">
+              <rect x="4" y="0" width="3" height="1"/><rect x="6" y="0" width="1" height="1"/>
+              <rect x="3" y="1" width="6" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+            </g>
+            <g class="p-skin"><rect x="4" y="2" width="4" height="2"/><rect x="5" y="4" width="3" height="1"/></g>
+            <g class="p-hair-hi"><rect x="4" y="1" width="2" height="1"/></g>
+            <g class="p-jacket"><rect x="4" y="5" width="4" height="3"/><rect x="3" y="7" width="1" height="2"/><rect x="8" y="7" width="1" height="2"/></g>
+            <g class="p-jacket2"><rect x="5" y="5" width="2" height="1"/></g>
+            <g class="p-pants"><rect x="4" y="8" width="2" height="3"/><rect x="6" y="8" width="2" height="3"/></g>
+            <g class="p-shoe"><rect x="4" y="11" width="2" height="2"/><rect x="6" y="11" width="2" height="2"/></g>
+            <g class="p-skin"><rect x="3" y="6" width="1" height="2"/><rect x="8" y="6" width="1" height="2"/></g>
+          </svg>
+          <!-- 帧 3：双臂反向摆、右腿前左腿后 -->
+          <svg class="runner-frame pixel-sprite" viewBox="0 0 12 14" width="120" height="140" shape-rendering="crispEdges">
+            <g class="p-hair">
+              <rect x="4" y="0" width="2" height="1"/><rect x="6" y="0" width="1" height="1"/>
+              <rect x="3" y="1" width="6" height="1"/><rect x="1" y="2" width="1" height="1"/>
+            </g>
+            <g class="p-skin"><rect x="4" y="2" width="4" height="2"/><rect x="5" y="4" width="3" height="1"/></g>
+            <g class="p-hair-hi"><rect x="4" y="1" width="2" height="1"/></g>
+            <g class="p-jacket"><rect x="4" y="5" width="4" height="3"/><rect x="3" y="6" width="1" height="2"/><rect x="8" y="6" width="1" height="2"/></g>
+            <g class="p-jacket2"><rect x="5" y="5" width="2" height="1"/></g>
+            <g class="p-pants"><rect x="4" y="8" width="2" height="3"/><rect x="6" y="8" width="2" height="3"/></g>
+            <g class="p-shoe"><rect x="2" y="11" width="2" height="2"/><rect x="8" y="11" width="2" height="2"/></g>
+            <g class="p-skin"><rect x="2" y="7" width="1" height="2"/><rect x="9" y="7" width="1" height="2"/></g>
+          </svg>
+          <!-- 帧 4：双腿并拢回中点（收腿） -->
+          <svg class="runner-frame pixel-sprite" viewBox="0 0 12 14" width="120" height="140" shape-rendering="crispEdges">
+            <g class="p-hair">
+              <rect x="4" y="0" width="3" height="1"/><rect x="3" y="1" width="6" height="1"/><rect x="9" y="1" width="2" height="1"/><rect x="9" y="2" width="1" height="1"/>
+            </g>
+            <g class="p-skin"><rect x="4" y="2" width="4" height="2"/><rect x="5" y="4" width="3" height="1"/></g>
+            <g class="p-hair-hi"><rect x="4" y="1" width="2" height="1"/></g>
+            <g class="p-jacket"><rect x="4" y="5" width="4" height="3"/><rect x="3" y="7" width="1" height="2"/><rect x="8" y="7" width="1" height="2"/></g>
+            <g class="p-jacket2"><rect x="5" y="5" width="2" height="1"/></g>
+            <g class="p-pants"><rect x="4" y="8" width="2" height="3"/><rect x="6" y="8" width="2" height="3"/></g>
+            <g class="p-shoe"><rect x="4" y="11" width="2" height="2"/><rect x="6" y="11" width="2" height="2"/></g>
+            <g class="p-skin"><rect x="3" y="6" width="1" height="2"/><rect x="8" y="6" width="1" height="2"/></g>
+          </svg>
+        </div>
         <!-- 地面 -->
         <div class="ground"><span class="ground-dash"></span></div>
       </div>
