@@ -10,4 +10,6 @@ scripts/fetch_tmdb_people.js
 scripts/merge_people.js
 scripts/split_people.js
 scripts/download_people_photos.js
+scripts/download_stills.js
+scripts/download_stills.sh
 cast_photos.json

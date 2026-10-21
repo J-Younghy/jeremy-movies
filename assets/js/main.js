@@ -81,6 +81,7 @@
   var previewRatings = previewOverview ? previewOverview.querySelector('.preview-overview__ratings') : null;
   var previewCast = previewOverview ? previewOverview.querySelector('.preview-overview__cast') : null;
   var previewComment = previewOverview ? previewOverview.querySelector('.preview-overview__comment') : null;
+  var previewStills = previewOverview ? previewOverview.querySelector('[data-preview-stills]') : null;
 
   // 详情页
   var detail = document.querySelector('[data-detail]');
@@ -583,6 +584,39 @@
     if (previewYear) {
       previewYear.textContent = movie.year != null ? String(movie.year) : '';
       previewYear.style.display = movie.year != null ? '' : 'none';
+    }
+
+    // 剧照横条：每部片 3 张附加剧照（stills/{id}-1/2/3.webp），hover 可切换背景
+    if (previewStills) {
+      previewStills.innerHTML = '';
+      var stillPaths = [];
+      for (var si = 1; si <= 3; si++) {
+        stillPaths.push('stills/' + movie.id + '-' + si + '.webp');
+      }
+      var mainBg = movie.backdrop || movie.poster || '';
+      stillPaths.forEach(function (p, idx) {
+        var img = document.createElement('img');
+        img.className = 'preview-still';
+        img.src = p;
+        img.alt = movie.title + ' 剧照 ' + (idx + 1);
+        img.loading = 'lazy';
+        img.dataset.idx = String(idx);
+        // hover 缩略图：背景切换为该剧照；移出恢复主剧照（视觉联动）
+        img.addEventListener('mouseenter', function () {
+          if (previewBgImg) previewBgImg.src = p;
+          previewStills.querySelectorAll('.preview-still').forEach(function (x) {
+            x.classList.toggle('is-active', x === img);
+          });
+        });
+        img.addEventListener('mouseleave', function () {
+          if (previewBgImg && mainBg) previewBgImg.src = mainBg;
+          img.classList.remove('is-active');
+        });
+        // 加载失败则隐藏（反幻觉：不留裂图）
+        img.addEventListener('error', function () { img.style.display = 'none'; });
+        previewStills.appendChild(img);
+      });
+      previewStills.style.display = stillPaths.length ? '' : 'none';
     }
 
     // meta chips：导演 / 类型 / 时长 / 状态

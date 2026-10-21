@@ -682,6 +682,29 @@ main,
   white-space: nowrap;
 }
 
+/* 剧照横条：3 张附加剧照横排，hover 切换背景 */
+.preview-overview__stills {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.preview-still {
+  width: calc((100% - 16px) / 3);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.preview-still:hover,
+.preview-still.is-active {
+  border-color: rgba(255, 255, 255, 0.85);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
 .preview-overview__meta {
   display: flex;
   flex-wrap: wrap;
@@ -804,6 +827,10 @@ main,
   }
   .preview-overview__title { font-size: 22px; }
   .preview-overview__year { font-size: 15px; }
+  .preview-overview__stills {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
   .preview-overview__meta {
     justify-content: center;
     gap: 6px;
