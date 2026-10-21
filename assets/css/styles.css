@@ -1503,6 +1503,9 @@ body.is-detail-open .detail__glow { opacity: 1; }
   display: flex;
   flex-direction: column;
 }
+/* 关键：display:flex 会覆盖 hidden 属性的默认 display:none，须显式兜底，
+   否则首次打开时空浮窗会被强行显示并挡住右下角交互 */
+.trailer-pop[hidden] { display: none !important; }
 @keyframes trailer-pop-in {
   from { opacity: 0; transform: translateY(16px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -1589,6 +1592,7 @@ body.is-detail-open .detail__glow { opacity: 1; }
   box-shadow: var(--shadow-pop);
   animation: trailer-dock-in 0.3s var(--ease-out);
 }
+.trailer-dock[hidden] { display: none !important; }
 @keyframes trailer-dock-in {
   from { opacity: 0; transform: translateX(16px); }
   to   { opacity: 1; transform: translateX(0); }
