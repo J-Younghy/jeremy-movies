@@ -1555,68 +1555,89 @@ body.is-detail-open .detail__glow { opacity: 1; }
   border: none;
 }
 
-/* 手机端：折叠到屏幕右缘，只露箭头标签 */
-.trailer-pop.is-collapsed {
-  right: -340px;          /* 只留 20px 边缘 */
+/* dock 态：对齐到详情页播放器框（坐标由 JS 计算），z-index 提到详情页之上 */
+.trailer-pop.is-docked {
+  right: auto;
+  bottom: auto;
+  z-index: 310;
+  width: auto;
+  border: none;
+  box-shadow: none;
+  border-radius: 14px;
   animation: none;
-  transition: right 0.34s var(--ease-out);
 }
-.trailer-pop.is-collapsed .trailer-pop__head { display: none; }
+.trailer-pop.is-docked .trailer-pop__head { display: none; }
 
-/* 折叠标签（箭头） */
-.trailer-tab {
+/* 手机端折叠态：浮窗本体彻底隐藏，仅留右下角双按钮控件 */
+.trailer-pop.is-collapsed {
+  animation: none;
+}
+
+/* 手机端收起态控件：右下角胶囊，含「展开」+「关闭」两个按钮 */
+.trailer-dock {
   position: fixed;
-  right: 0;
-  bottom: 120px;
-  z-index: 81;
+  right: 16px;
+  bottom: 96px;
+  z-index: 315;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 12px 8px;
-  border: none;
-  border-radius: 12px 0 0 12px;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 999px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-right: none;
   box-shadow: var(--shadow-pop);
-  color: var(--text-primary);
-  cursor: pointer;
-  animation: trailer-tab-in 0.3s var(--ease-out);
+  animation: trailer-dock-in 0.3s var(--ease-out);
 }
-@keyframes trailer-tab-in {
+@keyframes trailer-dock-in {
   from { opacity: 0; transform: translateX(16px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-.trailer-tab__icon {
-  width: 18px;
-  height: 18px;
+.trailer-dock button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
-.trailer-tab__dot {
+.trailer-dock button:hover { background: var(--bg-sunken); }
+.trailer-dock button svg { width: 20px; height: 20px; }
+.trailer-dock__close { color: var(--text-secondary); }
+.trailer-dock__expand {
+  position: relative;
+}
+.trailer-dock__expand::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--accent);
-  animation: trailer-tab-pulse 1.6s ease-in-out infinite;
+  animation: trailer-dock-pulse 1.6s ease-in-out infinite;
 }
-@keyframes trailer-tab-pulse {
+@keyframes trailer-dock-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
 }
 
-/* 电脑端不显示折叠标签 */
+/* 电脑端不显示收起态控件 */
 @media (pointer: fine) {
-  .trailer-tab { display: none; }
+  .trailer-dock { display: none; }
 }
 
-/* 手机端：浮窗更窄、贴合屏幕，折叠推出量适配 */
+/* 手机端：浮窗更窄、贴合屏幕 */
 @media (pointer: coarse), (max-width: 640px) {
   .trailer-pop {
     width: 300px;
     right: 16px;
     bottom: 16px;
   }
-  .trailer-pop.is-collapsed {
-    right: -284px; /* 露出 16px 边缘 */
-  }
-  .trailer-tab { bottom: 96px; }
+  .trailer-dock { bottom: 96px; }
 }
